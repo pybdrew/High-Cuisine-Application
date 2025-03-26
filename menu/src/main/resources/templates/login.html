@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
+    <head>
+        <link rel="stylesheet" th:href="@{/styles.css}">
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div align="center">
+                <form class="login" th:action="@{/doLogin}" th:object="${loginModel}" method="post">
+                    <table>
+                        <tr>
+                            <td><input type="text" placeholder="Username" th:field="*{username}"></td>
+                        </tr>
+                        <tr>
+                            <td><input type="password" placeholder="Password" th:field="*{password}"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><input class="buttonLike" type="submit" value="Login"></td>
+                        </tr>
+                        <tr>
+                            <td><h1 class="line"> OR </h1></td>
+                        </tr>
+                        <tr>
+                            <td><a href="/register"><button class="buttonLike" type="button">Register</button></a></td>
+                        </tr>
+                    </table>
+                    <!-- Display a general list of errors if there are any -->
+                    <div th:if="${#fields.hasErrors('*')}">List of Errors</div>
+                    <div th:each="err : ${#fields.errors('*')}">
+                        <span style="color: red" th:text="${err}" class="fieldError"></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
+

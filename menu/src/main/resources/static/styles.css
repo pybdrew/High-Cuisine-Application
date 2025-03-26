@@ -1,0 +1,60 @@
+
+
+input
+{
+    border-radius: 10px;
+    border-style: solid;
+}
+
+.buttonLike
+{
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 15px;
+    border-style: solid;
+    padding: 6px 20px;
+    color: black;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    background-color:rgb(202, 189, 189);
+}
+
+.login
+{
+    padding-top: 20px;
+}
+
+.line
+{
+    text-align: center;
+    position: relative;
+    margin: 20px 0;
+}
+
+.line::before,
+.line::after
+{
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 2px;
+    background-color: gray;
+}
+
+.line::before
+{
+    left: -5%;
+}
+
+.line::after
+{
+    right: -5%;
+}
+
+.line span
+{
+    background-color: white;
+    padding: 0 10px;
+    font-weight: bold;
+}

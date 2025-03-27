@@ -22,7 +22,7 @@
         margin: 8px 0;
         box-sizing: border-box;
       }
-      .login-container input[type="submit"] {
+      .login-container button {
         width: 100%;
         padding: 10px;
         background-color: #4CAF50;
@@ -41,28 +41,32 @@
         color: #007BFF;
       }
     </style>
+    <script>
+      function redirectToMainPage() {
+        window.location.href = "MainPage.html";
+      }
+    </script>
   </head>
   <body>
     <h1>Welcome to High Cuisine</h1>
-    <p>Explore our delicious recipes and culinary tips!</p>
+    <p>Manage your inventory!</p>
     <p>To get started, please log in:</p>
 
     <div class="login-container">
-      <form action="/login" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required />
+      <!-- No form for now, just client-side redirect -->
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required />
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
 
-        <input type="submit" value="Login" />
+      <button onclick="redirectToMainPage()">Login</button>
 
-        <div class="links">
-          <a href="/register">Register</a>
-          |
-          <a href="/reset-password">Forgot Password?</a>
-        </div>
-      </form>
+      <div class="links">
+        <a href="/register">Register</a>
+        |
+        <a href="/reset-password">Forgot Password?</a>
+      </div>
     </div>
   </body>
 </html>

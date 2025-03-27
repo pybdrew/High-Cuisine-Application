@@ -1,4 +1,7 @@
-
+#inputPlaceholder::placeholder
+{
+    color: black;
+}
 
 input
 {
@@ -9,7 +12,7 @@ input
 .buttonLike
 {
     margin-top: 20px;
-    width: 100%;
+    width: 150px;
     border-radius: 15px;
     border-style: solid;
     padding: 6px 20px;
@@ -28,28 +31,21 @@ input
 {
     text-align: center;
     position: relative;
-    margin: 20px 0;
+    margin: 20px auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .line::before,
 .line::after
 {
     content: "";
-    position: absolute;
-    top: 50%;
-    width: 40%;
+    flex-grow: 0;
+    width: 100px;
     height: 2px;
     background-color: gray;
-}
-
-.line::before
-{
-    left: -5%;
-}
-
-.line::after
-{
-    right: -5%;
+    margin: 0 10px;
 }
 
 .line span
@@ -58,3 +54,9 @@ input
     padding: 0 10px;
     font-weight: bold;
 }
+
+.errorList
+{
+    margin-top: 10px;
+}
+

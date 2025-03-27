@@ -6,30 +6,35 @@
     <body>
         <div layout:fragment="content">
             <div align="center">
-                <form class="login" th:action="@{/doLogin}" th:object="${loginModel}" method="post">
-                    <table>
-                        <tr>
-                            <td><input type="text" placeholder="Username" th:field="*{username}"></td>
-                        </tr>
-                        <tr>
-                            <td><input type="password" placeholder="Password" th:field="*{password}"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><input class="buttonLike" type="submit" value="Login"></td>
-                        </tr>
-                        <tr>
-                            <td><h1 class="line"> OR </h1></td>
-                        </tr>
-                        <tr>
-                            <td><a href="/register"><button class="buttonLike" type="button">Register</button></a></td>
-                        </tr>
-                    </table>
-                    <!-- Display a general list of errors if there are any -->
-                    <div th:if="${#fields.hasErrors('*')}">List of Errors</div>
-                    <div th:each="err : ${#fields.errors('*')}">
-                        <span style="color: red" th:text="${err}" class="fieldError"></span>
+                <form th:action="@{/doLogin}" th:object="${loginModel}" method="post">
+                    <div class="container d-flex flex-column justify-content-center align-items-center mt-5">
+                        <div class="row g-3 text-center mb-2">
+                            <div class="col-12">
+                                <input type="text" th:field="*{username}" id="inputPlaceholder" class="form-control w-50 mx-auto" placeholder="Username">
+                            </div>
+                            <div class="col-12">
+                                <span class="form-text">Must be 8-20 characters long.</span>
+                            </div>
+                        </div>
+                        <div class="row g-3 text-center">
+                            <div class="col-12">
+                                <input type="password" th:field="*{password}" id="inputPlaceholder" class="form-control w-50 mx-auto" placeholder="Password">
+                            </div>
+                            <div class="col-12">
+                                <span class="form-text">Must be 8-20 characters long.</span>
+                            </div>
+                        </div>
+                        <input type="submit" class="buttonLike" value="Login">
+                    </div>
+                    <div th:if="${#fields.hasErrors('*')}">
+                        <div class="errorList">List of Errors</div>
+                        <div th:each="err : ${#fields.errors('*')}">
+                            <span style="color: red" th:text="${err}" class="fieldError"></span>
+                        </div>
                     </div>
                 </form>
+                <h1 class="line">OR</h1><br/>
+                <input class="buttonLike" type="button" value="Register" onclick="window.location.href='/register'">
             </div>
         </div>
     </body>

@@ -3,10 +3,71 @@
     <head>
         <meta charset="UTF-8">
         <title>Registration</title>
+        <link rel="stylesheet" th:href="@{/styles.css}">
     </head>
     <body>
         <div layout:fragment="content">
-
+            <div align="center">
+                <h1>Register as User</h1>
+                <form class="regisForm">
+                    <table>
+                        <tr>
+                            <td>
+                                <!--First Name Section-->
+                                <div class="row mt-3">
+                                    <label class="col-sm-3 col-form-label text-left" for="inlineFormInputGroupUsername" style="white-space: nowrap;">First Name:</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control w-50 mx-auto" id="inlineFormInputGroupUsername" placeholder="First Name">
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <!--Last Name Section-->
+                                <div class="row mt-3">
+                                    <label class="col-sm-3 col-form-label text-left" for="inlineFormInputGroupUsername" style="white-space: nowrap;">Last Name:</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control w-50 mx-auto" id="inlineFormInputGroupUsername" placeholder="Last Name">
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <!-- Username Section -->
+                                <div class="row mt-3">
+                                    <label class="col-sm-3 col-form-label text-left" for="inlineFormInputGroupUsername">Username:</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <div class="input-group-text">@</div>
+                                            <input type="text" class="form-control w-50 mx-auto" id="inlineFormInputGroupUsername" placeholder="Username">
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <!--Password Section-->
+                                <div class="row mt-3">
+                                    <label class="col-sm-3 col-form-label text-left" for="inlineFormInputGroupUsername">Password:</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <input type="password" class="form-control w-50 mx-auto" id="inlineFormInputGroupUsername" placeholder="Password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <input class="buttonLike" type="submit" value="Submit">
+            </div>
         </div>
     </body>
 </html>

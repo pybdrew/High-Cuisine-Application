@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>High Cuisine Application</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+      }
+      .login-container {
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+      }
+      .login-container input[type="text"],
+      .login-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        box-sizing: border-box;
+      }
+      .login-container input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .login-container .links {
+        margin-top: 10px;
+        text-align: center;
+      }
+      .login-container .links a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #007BFF;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to High Cuisine</h1>
+    <p>Explore our delicious recipes and culinary tips!</p>
+    <p>To get started, please log in:</p>
+
+    <div class="login-container">
+      <form action="/login" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+
+        <input type="submit" value="Login" />
+
+        <div class="links">
+          <a href="/register">Register</a>
+          |
+          <a href="/reset-password">Forgot Password?</a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

@@ -27,21 +27,29 @@
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        text-align: center;
       }
       .nav-button:hover {
         background-color: #45a049;
       }
+      .logout-button {
+        background-color: #e53935;
+      }
+      .logout-button:hover {
+        background-color: #c62828;
+      }
     </style>
     <script>
       function goToInventory() {
-        window.location.href = "inventory.html"; // update path if needed
+        window.location.href = "inventory.html";
       }
       function goToAdminMenu() {
-        window.location.href = "admin.html"; // update path if needed
+        window.location.href = "admin.html";
       }
       function goToSearchInventory() {
-        window.location.href = "search.html"; // update path if needed
+        window.location.href = "search.html";
+      }
+      function logout() {
+        window.location.href = "Exit.html";
       }
     </script>
   </head>
@@ -53,6 +61,7 @@
       <button class="nav-button" onclick="goToInventory()">Inventory Management</button>
       <button class="nav-button" onclick="goToAdminMenu()">Admin Menu</button>
       <button class="nav-button" onclick="goToSearchInventory()">View/Search Inventory</button>
+      <button class="nav-button logout-button" onclick="logout()">Logout</button>
     </div>
   </body>
 </html>

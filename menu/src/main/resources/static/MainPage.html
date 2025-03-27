@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Main Page - High Cuisine</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        text-align: center;
+        background-color: #f4f4f4;
+      }
+      h1 {
+        color: #333;
+      }
+      .button-container {
+        margin-top: 40px;
+      }
+      .nav-button {
+        display: block;
+        width: 250px;
+        margin: 15px auto;
+        padding: 15px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        text-align: center;
+      }
+      .nav-button:hover {
+        background-color: #45a049;
+      }
+    </style>
+    <script>
+      function goToInventory() {
+        window.location.href = "inventory.html"; // update path if needed
+      }
+      function goToAdminMenu() {
+        window.location.href = "admin.html"; // update path if needed
+      }
+      function goToSearchInventory() {
+        window.location.href = "search.html"; // update path if needed
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Welcome to High Cuisine</h1>
+    <p>Select an option below to get started:</p>
+
+    <div class="button-container">
+      <button class="nav-button" onclick="goToInventory()">Inventory Management</button>
+      <button class="nav-button" onclick="goToAdminMenu()">Admin Menu</button>
+      <button class="nav-button" onclick="goToSearchInventory()">View/Search Inventory</button>
+    </div>
+  </body>
+</html>

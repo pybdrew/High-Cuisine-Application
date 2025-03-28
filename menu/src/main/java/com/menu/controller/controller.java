@@ -81,7 +81,7 @@ public String showDrinkMenu() {
 
 @GetMapping("/sandwich")
 public String showSandwichMenu() {
-    return "sandwich"; // maps to sandwich.html
+    return "sandwiches"; // maps to sandwiches.html
 }
     
 }

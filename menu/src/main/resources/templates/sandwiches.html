@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultTemp">
+
+<head>
+    <title>Sandwich Menu</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+
+
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h1 class="text-center mb-3">Sandwich Menu</h1>
+        <p class="text-center mb-5">
+            Discover our selection of handcrafted sandwiches—perfectly toasted, fresh, and stacked with flavor. A bite above the rest!
+        </p>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+            <!-- Sandwich Card 1 -->
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1605478521339-6538e976245b?auto=format&fit=crop&w=800&q=80"
+                         class="card-img-top drink-img" alt="Turkey Club">
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div class="card-text-wrapper">
+                            <h5 class="card-title">Turkey Club</h5>
+                            <p class="card-text">Smoked turkey with crispy bacon, lettuce, tomato, and mayo.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-auto">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=800&q=80"
+                         class="card-img-top drink-img" alt="BLT">
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div class="card-text-wrapper">
+                            <h5 class="card-title">BLT</h5>
+                            <p class="card-text">Crispy bacon, lettuce, tomato, and a dash of black pepper mayo.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-auto">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&w=800&q=80"
+                         class="card-img-top drink-img" alt="Grilled Cheese">
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div class="card-text-wrapper">
+                            <h5 class="card-title">Grilled Cheese</h5>
+                            <p class="card-text">Golden, melty cheddar cheese on toasted sourdough.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-auto">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1585238342024-78f3f78b57c0?auto=format&fit=crop&w=800&q=80"
+                         class="card-img-top drink-img" alt="Ham & Swiss">
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div class="card-text-wrapper">
+                            <h5 class="card-title">Ham & Swiss</h5>
+                            <p class="card-text">Black forest ham and melted Swiss with mustard on rye.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-auto">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1613141414662-6c0e5dd18d02?auto=format&fit=crop&w=800&q=80"
+                         class="card-img-top drink-img" alt="Veggie Delight">
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div class="card-text-wrapper">
+                            <h5 class="card-title">Veggie Delight</h5>
+                            <p class="card-text">Fresh cucumbers, spinach, tomatoes, and hummus in a wrap.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-auto">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1585238342024-78f3f78b57c0?auto=format&fit=crop&w=800&q=80"
+                         class="card-img-top drink-img" alt="Chicken Caesar Wrap">
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div class="card-text-wrapper">
+                            <h5 class="card-title">Chicken Caesar Wrap</h5>
+                            <p class="card-text">Grilled chicken, romaine, parmesan, and Caesar dressing.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-auto">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1585238342024-78f3f78b57c0?auto=format&fit=crop&w=800&q=80"
+                         class="card-img-top drink-img" alt="Tuna Melt">
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div class="card-text-wrapper">
+                            <h5 class="card-title">Tuna Melt</h5>
+                            <p class="card-text">Tuna salad with cheddar on toasted bread—grilled to perfection.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-auto">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://images.unsplash.com/photo-1617080126834-0b2ed5a204e2?auto=format&fit=crop&w=800&q=80"
+                         class="card-img-top drink-img" alt="Italian Sub">
+                    <div class="card-body text-center d-flex flex-column justify-content-between">
+                        <div class="card-text-wrapper">
+                            <h5 class="card-title">Italian Sub</h5>
+                            <p class="card-text">Salami, pepperoni, provolone, and lettuce on a hoagie roll.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-auto">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

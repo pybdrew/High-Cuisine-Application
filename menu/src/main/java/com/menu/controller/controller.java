@@ -73,6 +73,16 @@ public class controller
         model.addAttribute("title", "Registration");
         return "register";
     }
+
+    @GetMapping("/drink")
+public String showDrinkMenu() {
+    return "drinks"; // maps to drinks.html
+}
+
+@GetMapping("/sandwich")
+public String showSandwichMenu() {
+    return "sandwich"; // maps to sandwich.html
+}
     
 }
 

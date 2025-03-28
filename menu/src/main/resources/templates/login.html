@@ -1,43 +1,56 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
-    <head>
-        <title>Login</title>
-        <link rel="stylesheet" th:href="@{/styles.css}">
-    </head>
-    <body>
-        <div layout:fragment="content">
-            <div align="center">
-                <form th:action="@{/doLogin}" th:object="${loginModel}" method="post">
-                    <div class="container d-flex flex-column justify-content-center align-items-center mt-5">
-                        <div class="row g-3 text-center mb-2">
-                            <div class="col-12">
-                                <input type="text" th:field="*{username}" id="inputPlaceholder" class="form-control w-50 mx-auto" placeholder="Username">
-                            </div>
-                            <div class="col-12">
-                                <span class="form-text">Must be 8-20 characters long.</span>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultTemp">
+
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-lg p-4">
+                    <h2 class="text-center mb-4">Login to Your Account</h2>
+
+                    <form th:action="@{/doLogin}" th:object="${loginModel}" method="post">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" th:field="*{username}" id="username"
+                                   class="form-control" placeholder="Enter username">
+                            <div class="form-text">Must be 8-20 characters long.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" th:field="*{password}" id="password"
+                                   class="form-control" placeholder="Enter password">
+                            <div class="form-text">Must be 8-20 characters long.</div>
+                        </div>
+
+                        <div th:if="${#fields.hasErrors('*')}">
+                            <div class="alert alert-danger">
+                                <div th:each="err : ${#fields.errors('*')}">
+                                    <span th:text="${err}" class="fieldError"></span><br/>
+                                </div>
                             </div>
                         </div>
-                        <div class="row g-3 text-center">
-                            <div class="col-12">
-                                <input type="password" th:field="*{password}" id="inputPlaceholder" class="form-control w-50 mx-auto" placeholder="Password">
-                            </div>
-                            <div class="col-12">
-                                <span class="form-text">Must be 8-20 characters long.</span>
-                            </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Login</button>
                         </div>
-                        <input type="submit" class="buttonLike" value="Login">
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <span>Don't have an account?</span><br/>
+                        <button class="btn btn-outline-secondary mt-2" onclick="window.location.href='/register'">
+                            Register
+                        </button>
                     </div>
-                    <div th:if="${#fields.hasErrors('*')}">
-                        <div class="errorList">List of Errors</div>
-                        <div th:each="err : ${#fields.errors('*')}">
-                            <span style="color: red" th:text="${err}" class="fieldError"></span>
-                        </div>
-                    </div>
-                </form>
-                <h1 class="line">OR</h1><br/>
-                <input class="buttonLike" type="button" value="Register" onclick="window.location.href='/register'">
+                </div>
             </div>
         </div>
-    </body>
-</html>
-
+    </div>
+</div>

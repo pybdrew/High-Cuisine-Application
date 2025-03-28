@@ -60,3 +60,32 @@ input
     margin-top: 10px;
 }
 
+/* Ensures images are same size and nicely cropped */
+.img-fixed-size {
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+}
+
+/* Makes sure cards stay the same height and button stays at the bottom */
+.card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+/* Force the text area above the button to take equal height */
+.card-text-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

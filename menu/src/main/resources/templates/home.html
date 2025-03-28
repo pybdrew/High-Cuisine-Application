@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="layouts/defaultTemp">
@@ -51,6 +52,51 @@
                             <p class="card-text">Explore our handcrafted sandwiches made with the freshest ingredients.</p>
                         </div>
                         <a th:href="@{/sandwich}" class="btn btn-primary mt-3">View Sandwich Menu</a>
+=======
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" th:href="@{/styles.css}">
+        <title th:text="${title}">Home</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="container mt-4">
+                <h1 class="text-center mb-4">Welcome to the Menu</h1>
+                <div class="d-flex justify-content-around flex-wrap">
+                    <div class="card">
+                        <img src="" class="card-img-top" alt="Coffee Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Latte</h5>
+                            <p class="card-text">A creamy blend of espresso and steamed milk.</p>
+                            <a href="#" class="btn btn-primary">Order Now</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="" class="card-img-top" alt="Coffee Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Cappuccino</h5>
+                            <p class="card-text">Espresso with steamed and frothed milk.</p>
+                            <a href="#" class="btn btn-primary">Order Now</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="" class="card-img-top" alt="Coffee Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Espresso</h5>
+                            <p class="card-text">Strong and rich espresso shot.</p>
+                            <a href="#" class="btn btn-primary">Order Now</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="" class="card-img-top" alt="Coffee Image">
+                        <div class="card-body">
+                            <h5 class="card-title">Mocha</h5>
+                            <p class="card-text">Espresso with chocolate and steamed milk.</p>
+                            <a href="#" class="btn btn-primary">Order Now</a>
+                        </div>
+>>>>>>> 9e63fe6481135e435304a3a5495adcc5b1e23812
                     </div>
                 </div>
             </div>

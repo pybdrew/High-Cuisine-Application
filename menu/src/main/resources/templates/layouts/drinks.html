@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultTemp">
+
+<head>
+    <title>Drink Menu</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <h1 class="text-center mb-3">Drink Menu</h1>
+        <p class="text-center mb-5">Explore our handcrafted coffee beverages, made to energize and satisfy. Whether you love it hot, iced, creamy, or bold—there’s something here for every coffee lover.</p>
+
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            <!-- Coffee Cards -->
+            <div class="col" th:each="i : ${#numbers.sequence(1,8)}">
+                <div class="card h-100">
+                    <img th:src="@{https://source.unsplash.com/400x300/?coffee,drink,${i}}" class="card-img-top drink-img" alt="Coffee Drink">
+                    <div class="card-body d-flex flex-column justify-content-between text-center">
+                        <div class="card-text-wrapper">
+                            <h5 class="card-title">Coffee Drink [[${i}]]</h5>
+                            <p class="card-text">A rich and flavorful coffee beverage crafted just for you.</p>
+                        </div>
+                        <a href="#" class="btn btn-primary mt-3">Buy Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -21,7 +21,7 @@ public class controller
      * @param model
      * @return
      */
-    @GetMapping("/home")
+    @GetMapping("/")
     public String home(Model model)
     {
         model.addAttribute("title", "Home");
@@ -58,7 +58,7 @@ public class controller
             return "login";
         }
         // Redirect to homepage after successful login
-        return "redirect:/home";
+        return "redirect:/";
     }
 
     /**
@@ -84,7 +84,7 @@ public class controller
             return "register";
         }
         //Redirect home if registration succesful
-        return "redirect:/home";
+        return "redirect:/";
     }
     
 

@@ -8,65 +8,39 @@
     <body>
         <div layout:fragment="content">
             <div align="center">
-                <h1>Register as User</h1>
-                <form class="regisForm">
-                    <table>
-                        <tr>
-                            <td>
-                                <!--First Name Section-->
-                                <div class="row mt-3">
-                                    <label class="col-sm-3 col-form-label text-left" for="inlineFormInputGroupUsername" style="white-space: nowrap;">First Name:</label>
-                                    <div class="col-sm-9">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control w-50 mx-auto" id="inlineFormInputGroupUsername" placeholder="First Name">
-                                        </div>
-                                    </div>
+                <form class="regisForm container mt-4" th:action="@{/doRegister}" th:object="${registerModel}" method="post">
+                    <div class="card p-4 shadow-lg">
+                        <h2 class="text-center">Create Account</h2>
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">First Name:</label>
+                            <input type="text" class="form-control" th:field="*{firstName}" id="firstName" placeholder="First Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="form-label">Last Name:</label>
+                            <input type="text" class="form-control" th:field="*{lastName}" id="lastName" placeholder="Last Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username:</label>
+                            <div class="input-group">
+                                <span class="input-group-text">@</span>
+                                <input type="text" class="form-control" th:field="*{username}" id="username" placeholder="Username">
+                            </div>
+                            <div class="form-text text-muted">For privacy, avoid using your real name.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password:</label>
+                            <input type="password" class="form-control" th:field="*{password}" id="password" placeholder="Password">
+                        </div>
+                        <div th:if="${#fields.hasErrors('*')}">
+                            <div class="alert alert-danger">
+                                <div th:each="err : ${#fields.errors('*')}">
+                                    <span th:text="${err}" class="fieldError"></span><br/>
                                 </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <!--Last Name Section-->
-                                <div class="row mt-3">
-                                    <label class="col-sm-3 col-form-label text-left" for="inlineFormInputGroupUsername" style="white-space: nowrap;">Last Name:</label>
-                                    <div class="col-sm-9">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control w-50 mx-auto" id="inlineFormInputGroupUsername" placeholder="Last Name">
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <!-- Username Section -->
-                                <div class="row mt-3">
-                                    <label class="col-sm-3 col-form-label text-left" for="inlineFormInputGroupUsername">Username:</label>
-                                    <div class="col-sm-9">
-                                        <div class="input-group">
-                                            <div class="input-group-text">@</div>
-                                            <input type="text" class="form-control w-50 mx-auto" id="inlineFormInputGroupUsername" placeholder="Username">
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <!--Password Section-->
-                                <div class="row mt-3">
-                                    <label class="col-sm-3 col-form-label text-left" for="inlineFormInputGroupUsername">Password:</label>
-                                    <div class="col-sm-9">
-                                        <div class="input-group">
-                                            <input type="password" class="form-control w-50 mx-auto" id="inlineFormInputGroupUsername" placeholder="Password">
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-primary w-100" value="Sign Up">
+                    </div>
                 </form>
-                <input class="buttonLike" type="submit" value="Submit">
             </div>
         </div>
     </body>

@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="layouts/defaultTemp">
-
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="layouts/defaultTemp">
 <head>
     <title>Sandwich Menu</title>
     <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
-
-
 <div layout:fragment="content">
     <div class="container mt-5">
         <h1 class="text-center mb-3">Sandwich Menu</h1>
         <p class="text-center mb-5">
             Discover our selection of handcrafted sandwiches—perfectly toasted, fresh, and stacked with flavor. A bite above the rest!
         </p>
-
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
             <!-- Sandwich Card 1 -->
             <div class="col">
                 <div class="card h-100">
                     <img src="https://plus.unsplash.com/premium_photo-1664472757995-3260cd26e477?q=80&w=1961&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                         class="card-img-top drink-img" alt="Turkey Club">
+                        class="card-img-top drink-img" alt="Turkey Club">
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 class="card-title">Turkey Club</h5>
@@ -31,12 +27,11 @@
                     </div>
                 </div>
             </div>
-
             <!-- Card 2 -->
             <div class="col">
                 <div class="card h-100">
                     <img src="https://images.unsplash.com/photo-1619096252214-ef06c45683e3?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                         class="card-img-top drink-img" alt="BLT">
+                        class="card-img-top drink-img" alt="BLT">
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 class="card-title">BLT</h5>
@@ -46,12 +41,11 @@
                     </div>
                 </div>
             </div>
-
             <!-- Card 3 -->
             <div class="col">
                 <div class="card h-100">
                     <img src="https://images.unsplash.com/photo-1528736235302-52922df5c122?q=80&w=1908&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                         class="card-img-top drink-img" alt="Grilled Cheese">
+                        class="card-img-top drink-img" alt="Grilled Cheese">
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 class="card-title">Grilled Cheese</h5>
@@ -66,7 +60,7 @@
             <div class="col">
                 <div class="card h-100">
                     <img src="https://images.unsplash.com/photo-1481070414801-51fd732d7184?q=80&w=1924&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                         class="card-img-top drink-img" alt="Ham & Swiss">
+                        class="card-img-top drink-img" alt="Ham & Swiss">
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 class="card-title">Ham & Swiss</h5>
@@ -76,12 +70,11 @@
                     </div>
                 </div>
             </div>
-
             <!-- Card 5 -->
             <div class="col">
                 <div class="card h-100">
                     <img src="https://plus.unsplash.com/premium_photo-1671559021919-19d9610c8cad?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                         class="card-img-top drink-img" alt="Veggie Delight">
+                        class="card-img-top drink-img" alt="Veggie Delight">
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 class="card-title">Veggie Delight</h5>
@@ -91,12 +84,11 @@
                     </div>
                 </div>
             </div>
-
             <!-- Card 6 -->
             <div class="col">
                 <div class="card h-100">
                     <img src="https://plus.unsplash.com/premium_photo-1700677185925-81d4d3edc860?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                         class="card-img-top drink-img" alt="Chicken Caesar Wrap">
+                        class="card-img-top drink-img" alt="Chicken Caesar Wrap">
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 class="card-title">Chicken Caesar Wrap</h5>
@@ -106,12 +98,11 @@
                     </div>
                 </div>
             </div>
-
             <!-- Card 7 -->
             <div class="col">
                 <div class="card h-100">
                     <img src="https://www.seriouseats.com/thmb/h3BPsOL0qqqBPYN4aivT3xEAZG4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/20240214-TunaMelt-SEA--Peyton-Beckworth-1f500549fa8f48499e436fa3c2a0ca0e.jpg"
-                         class="card-img-top drink-img" alt="Tuna Melt">
+                        class="card-img-top drink-img" alt="Tuna Melt">
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 class="card-title">Tuna Melt</h5>
@@ -121,12 +112,11 @@
                     </div>
                 </div>
             </div>
-
             <!-- Card 8 -->
             <div class="col">
                 <div class="card h-100">
                     <img src="https://food.fnr.sndimg.com/content/dam/images/food/fullset/2011/2/4/1/RX-FNM_030111-Weeknight-Dinners-025_s4x3.jpg.rend.hgtvcom.616.462.suffix/1382539864691.webp"
-                         class="card-img-top drink-img" alt="Italian Sub">
+                        class="card-img-top drink-img" alt="Italian Sub">
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 class="card-title">Italian Sub</h5>

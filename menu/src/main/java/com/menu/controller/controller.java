@@ -7,14 +7,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.menu.model.LoginModel;
+import com.menu.model.RegisterModel;
 
 import jakarta.validation.Valid;
+
 
 
 @Controller
 public class controller
 {
-
     /**
      * Mapping for homepage
      * @param model
@@ -51,13 +52,11 @@ public class controller
     public String doLogin(@Valid LoginModel loginModel, BindingResult bindingResult, Model model)
     {
         System.out.println(String.format("Form with username of %s and Password of %s", loginModel.getUsername(), loginModel.getPassword()));
-
         if (bindingResult.hasErrors())
         {
             model.addAttribute("title", "Login Form");
             return "login";
         }
-
         // Redirect to homepage after successful login
         return "redirect:/home";
     }
@@ -71,18 +70,44 @@ public class controller
     public String register(Model model)
     {
         model.addAttribute("title", "Registration");
+        model.addAttribute("registerModel", new RegisterModel());
         return "register";
     }
 
-    @GetMapping("/drink")
-public String showDrinkMenu() {
-    return "drinks"; // maps to drinks.html
-}
-
-@GetMapping("/sandwich")
-public String showSandwichMenu() {
-    return "sandwiches"; // maps to sandwiches.html
-}
+    @PostMapping("/doRegister")
+    public String doRegister(@Valid RegisterModel registerModel, BindingResult bindingResult, Model model)
+    {
+        System.out.println(String.format("Form with First name: %s, Last name: %s, Username: %s, and Password: %s", registerModel.getFirstName(), registerModel.getLastName(), registerModel.getUsername(), registerModel.getPassword()));
+        if(bindingResult.hasErrors())
+        {
+            model.addAttribute("title", "Registration");
+            return "register";
+        }
+        //Redirect home if registration succesful
+        return "redirect:/home";
+    }
     
+
+    /**
+     * Mapping for drink menu
+     * @return
+     */
+    @GetMapping("/drink")
+    public String showDrinkMenu(Model model)
+    {
+        model.addAttribute("title", "Drink Menu");
+        return "drinks";
+    }
+
+    /**
+     * Mapping for food menu(currently sandwiches)
+     * @return
+     */
+    @GetMapping("/sandwich")
+    public String showSandwichMenu(Model model)
+    {
+        model.addAttribute("title", "Sandwich Menu");
+        return "sandwiches";
+    }
 }
 

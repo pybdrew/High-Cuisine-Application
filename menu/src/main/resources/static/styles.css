@@ -74,7 +74,8 @@ input
     flex-direction: column;
 }
 
-.card-body {
+.card-body
+{
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -97,13 +98,15 @@ input
     object-fit: cover;
 }
 
-.card {
+.card
+{
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.card-body {
+.card-body
+{
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -111,7 +114,8 @@ input
     text-align: center;
 }
 
-.card-text-wrapper {
+.card-text-wrapper
+{
     flex-grow: 1;
     display: flex;
     flex-direction: column;

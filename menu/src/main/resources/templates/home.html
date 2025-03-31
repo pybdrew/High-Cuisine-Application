@@ -20,31 +20,18 @@
             At High Cuisine, our menus are the best in the industry—carefully crafted to highlight delicious options that keep your customers coming back for more. Discover the perfect fusion of presentation and flavor, and elevate your menu management with every dish.
         </p>
         <div class="row justify-content-center">
-            <!-- Drinks Card -->
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80"
-                        class="card-img-top img-fixed-size" alt="Coffee Drinks">
-                    <div class="card-body text-center d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title">Drinks</h5>
-                            <p class="card-text">Warm up with our curated selection of hot and cold beverages.</p>
+            <!-- Menu Cards -->
+            <div class="row justify-content-center">
+                <div th:each="menu : ${menus}" class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img th:src="@{${menu.imageUrl}}" class="card-img-top img-fixed-size" alt="Menu">
+                        <div class="card-body text-center d-flex flex-column justify-content-between">
+                            <div>
+                                <h5 th:text="${menu.name}" class="card-title"></h5>
+                                <p th:text="${menu.description}" class="card-text"></p>
+                            </div>
+                            <a href="#" class="btn btn-primary mt-3">View Menu</a>
                         </div>
-                        <a th:href="@{/drink}" class="btn btn-primary mt-3">View Drink Menu</a>
-                    </div>
-                </div>
-            </div>
-            <!-- Sandwiches Card -->
-            <div class="col-md-4 mb-4">
-                <div class="card h-100">
-                    <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-                        class="card-img-top img-fixed-size" alt="Sandwich">
-                    <div class="card-body text-center d-flex flex-column justify-content-between">
-                        <div>
-                            <h5 class="card-title">Sandwiches</h5>
-                            <p class="card-text">Explore our handcrafted sandwiches made with the freshest ingredients.</p>
-                        </div>
-                        <a th:href="@{/sandwich}" class="btn btn-primary mt-3">View Sandwich Menu</a>
                     </div>
                 </div>
             </div>

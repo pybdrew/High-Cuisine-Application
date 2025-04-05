@@ -8,7 +8,7 @@ public class LoginModel
     private String username;
 
     @NotNull(message="Password is a required field")
-    @Size(min=1, max=2, message="Password must be atleast 8 characters")
+    @Size(min=1, max=32, message="Password must be atleast 8 characters")
     private String password;
 
     public String getPassword()

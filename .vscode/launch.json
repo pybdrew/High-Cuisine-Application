@@ -9,6 +9,16 @@
             "projectName": "menu",
             "args": "",
             "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-MenuApplication<menu>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.menu.app.MenuApplication",
+            "projectName": "menu",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
         }
     ]
 }

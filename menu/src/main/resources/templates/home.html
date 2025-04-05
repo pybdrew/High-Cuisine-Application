@@ -30,7 +30,7 @@
                                 <h5 th:text="${menu.name}" class="card-title"></h5>
                                 <p th:text="${menu.description}" class="card-text"></p>
                             </div>
-                            <a href="#" class="btn btn-primary mt-3">View Menu</a>
+                            <a th:href="@{'/' + ${menu.productType}}" class="btn btn-primary mt-3">View Menu</a>
                         </div>
                     </div>
                 </div>

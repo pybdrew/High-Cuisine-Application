@@ -4,15 +4,11 @@ import java.util.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-import com.menu.model.DrinkModel;
-import com.menu.model.HomeModel;
-import com.menu.model.LoginModel;
-import com.menu.model.RegisterModel;
-import com.menu.model.SandwichModel;
+import com.menu.model.*;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 
@@ -30,9 +26,9 @@ public class controller
     {
         List<HomeModel> menus = new ArrayList<>();
         menus.add(new HomeModel("Drinks", "Warm up with our curated selection of hot and cold beverages.",
-        "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80"));
-        menus.add(new HomeModel("Sandwiches", "Explore our handcrafted sandwiches made with the freshesy ingredients.",
-        "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"));
+        "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80", "drink"));
+        menus.add(new HomeModel("Sandwiches", "Explore our handcrafted sandwiches made with the freshest ingredients.",
+        "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "sandwich"));
 
         model.addAttribute("menus", menus);
         model.addAttribute("title", "Home");
@@ -60,7 +56,7 @@ public class controller
      * @return
      */
     @PostMapping("/doLogin")
-    public String doLogin(@Valid LoginModel loginModel, BindingResult bindingResult, Model model)
+    public String doLogin(@Valid LoginModel loginModel, BindingResult bindingResult, Model model, HttpSession session)
     {
         System.out.println(String.format("Form with username of %s and Password of %s", loginModel.getUsername(), loginModel.getPassword()));
         if (bindingResult.hasErrors())
@@ -68,6 +64,7 @@ public class controller
             model.addAttribute("title", "Login Form");
             return "login";
         }
+
         // Redirect to homepage after successful login
         return "redirect:/";
     }

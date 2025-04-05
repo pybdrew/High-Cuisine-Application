@@ -6,10 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import com.menu.model.*;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.menu.service.LoginService;
@@ -65,7 +61,8 @@ public class controller
     private final RegisterService registerService;
     
     @Autowired
-    public controller(LoginService loginService, RegisterService registerService) {
+    public controller(LoginService loginService, RegisterService registerService) 
+    {
         this.loginService = loginService;
         this.registerService = registerService;
     }
@@ -81,15 +78,22 @@ public class controller
     public String doLogin(@Valid LoginModel loginModel, BindingResult bindingResult, Model model, HttpSession session)
     {
         System.out.println(String.format("Form with username of %s and Password of %s", loginModel.getUsername(), loginModel.getPassword()));
+
         if (bindingResult.hasErrors())
         {
             model.addAttribute("title", "Login Form");
             return "login";
         }
 
-        // Redirect to homepage after successful login
+        if ("admin".equals(loginModel.getUsername()) && "password".equals(loginModel.getPassword())) {
+            // Store user role in session
+            session.setAttribute("userRole", "admin");
+            return "redirect:/adminHome";
+        }
+
         return "redirect:/";
     }
+
 
     /**
      * Mapping for register
@@ -128,6 +132,19 @@ public class controller
         return "redirect:/";
     }
     
+
+    @GetMapping("/adminHome")
+    public String adminHomePage(Model model, HttpSession session)
+    {
+        if (session.getAttribute("userRole") == null || !session.getAttribute("userRole").equals("admin"))
+        {
+            return "redirect:/login";
+        }
+
+        model.addAttribute("title", "Admin Home");
+        return "adminHome";
+    }
+
 
     /**
      * Mapping for drink menu

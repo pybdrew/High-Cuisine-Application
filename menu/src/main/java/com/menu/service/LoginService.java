@@ -4,9 +4,16 @@ package com.menu.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginService {
-    public boolean validateLogin(String username, String password) {
+public class LoginService 
+{
+    public String validateLogin(String username, String password) 
+    {
         // Dummy check - replace with real login logic later
-        return "admin".equals(username) && "password".equals(password);
+        if ("admin".equals(username) && "password".equals(password)) 
+        {
+            // Return role as 'admin' if login is successful
+            return "admin";  
+        }
+        return null;
     }
 }

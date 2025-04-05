@@ -8,8 +8,14 @@ import com.menu.model.ProductModel;
 
 @Controller
 @RequestMapping("/product")
-public class productController 
+public class adminController 
 {
+
+    @GetMapping("")
+    public String showProductManagementPage()
+    {
+        return "product/productManagement";
+    }
 
     @GetMapping("/create")
     public String showCreateProductForm(Model model)

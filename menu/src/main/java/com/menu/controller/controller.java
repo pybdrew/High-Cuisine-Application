@@ -1,6 +1,8 @@
 package com.menu.controller;
 
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -52,6 +54,12 @@ public class controller
         return "login";
     }
 
+    private final LoginService loginService;
+
+@Autowired
+public controller(LoginService loginService) {
+    this.loginService = loginService;
+}
     /**
      * Check fields for login
      * @param loginModel

@@ -1,12 +1,24 @@
 package com.menu.controller;
 
 import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.menu.model.*;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import com.menu.service.LoginService;
+import com.menu.model.DrinkModel;
+import com.menu.model.HomeModel;
+import com.menu.model.LoginModel;
+import com.menu.model.RegisterModel;
+import com.menu.model.SandwichModel;
+import com.menu.service.RegisterService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -48,6 +60,16 @@ public class controller
         return "login";
     }
 
+
+    private final LoginService loginService;
+    private final RegisterService registerService;
+    
+    @Autowired
+    public controller(LoginService loginService, RegisterService registerService) {
+        this.loginService = loginService;
+        this.registerService = registerService;
+    }
+
     /**
      * Check fields for login
      * @param loginModel
@@ -83,15 +105,26 @@ public class controller
     }
 
     @PostMapping("/doRegister")
-    public String doRegister(@Valid RegisterModel registerModel, BindingResult bindingResult, Model model)
-    {
-        System.out.println(String.format("Form with First name: %s, Last name: %s, Username: %s, and Password: %s", registerModel.getFirstName(), registerModel.getLastName(), registerModel.getUsername(), registerModel.getPassword()));
-        if(bindingResult.hasErrors())
-        {
+    public String doRegister(@Valid RegisterModel registerModel, BindingResult bindingResult, Model model) {
+        System.out.println(String.format(
+            "Form with First name: %s, Last name: %s, Username: %s, and Password: %s",
+            registerModel.getFirstName(),
+            registerModel.getLastName(),
+            registerModel.getUsername(),
+            registerModel.getPassword()));
+    
+        if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Registration");
             return "register";
         }
-        //Redirect home if registration succesful
+    
+        boolean success = registerService.registerUser(registerModel);
+    
+        if (!success) {
+            model.addAttribute("registerError", "Registration failed. Try again.");
+            return "register";
+        }
+    
         return "redirect:/";
     }
     

@@ -6,7 +6,12 @@
         <link rel="stylesheet" th:href="@{/styles.css}">
     </head>
     <body>
-        <div layout:fragment="content">
+        <script th:if="${param.registerSuccess}" type="text/javascript">
+            window.onload = function() {
+                alert("User created successfully!");
+            }
+        </script>
+            <div layout:fragment="content">
             <div align="center">
                 <form class="regisForm container mt-4" th:action="@{/doRegister}" th:object="${registerModel}" method="post">
                     <div class="card p-4 shadow-lg">

@@ -85,7 +85,8 @@ public class controller
             return "login";
         }
 
-        if ("admin".equals(loginModel.getUsername()) && "password".equals(loginModel.getPassword())) {
+        if ("admin".equals(loginModel.getUsername()) && "password".equals(loginModel.getPassword()))
+        {
             // Store user role in session
             session.setAttribute("userRole", "admin");
             return "redirect:/adminHome";
@@ -109,7 +110,8 @@ public class controller
     }
 
     @PostMapping("/doRegister")
-    public String doRegister(@Valid RegisterModel registerModel, BindingResult bindingResult, Model model) {
+    public String doRegister(@Valid RegisterModel registerModel, BindingResult bindingResult, Model model)
+    {
         System.out.println(String.format(
             "Form with First name: %s, Last name: %s, Username: %s, and Password: %s",
             registerModel.getFirstName(),
@@ -117,14 +119,16 @@ public class controller
             registerModel.getUsername(),
             registerModel.getPassword()));
     
-        if (bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors())
+        {
             model.addAttribute("title", "Registration");
             return "register";
         }
     
         boolean success = registerService.registerUser(registerModel);
     
-        if (!success) {
+        if (!success)
+        {
             model.addAttribute("registerError", "Registration failed. Try again.");
             return "register";
         }

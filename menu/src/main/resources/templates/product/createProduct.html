@@ -2,38 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
 <head>
     <title>Create New Product</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
-    <div layout:fragment="content">
-        <h1>Create a New Product</h1>
-
-        <!-- Product creation form -->
-        <form th:action="@{/product/create}" th:object="${product}" method="post">
-            <div>
-                <label for="name">Product Name:</label>
-                <input type="text" id="name" th:field="*{name}" placeholder="Enter product name" required />
+    <div layout:fragment="content" class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1>Create a New Product</h1>
             </div>
-            <div>
-                <label for="description">Description:</label>
-                <textarea id="description" th:field="*{description}" placeholder="Enter product description" required></textarea>
+            <div class="card-body">
+                <form th:action="@{/product/create}" th:object="${product}" method="post">
+                    <div class="form-group">
+                        <label for="name">Product Name:</label>
+                        <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter product name" required />
+                        <div th:if="${#fields.hasErrors('name')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('name')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea id="description" th:field="*{description}" class="form-control" placeholder="Enter product description" required></textarea>
+                        <div th:if="${#fields.hasErrors('description')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('description')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageUrl">Image URL:</label>
+                        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" placeholder="Enter product image URL" required />
+                        <div th:if="${#fields.hasErrors('imageUrl')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('imageUrl')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productType">Product Type:</label>
+                        <select id="productType" th:field="*{productType}" class="form-control" required>
+                            <option value="Sandwich">Sandwich</option>
+                            <option value="Drink">Drink</option>
+                            <option value="Snack">Snack</option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('productType')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('productType')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Create Product</button>
+                    </div>
+                </form>
             </div>
-            <div>
-                <label for="imageUrl">Image URL:</label>
-                <input type="text" id="imageUrl" th:field="*{imageUrl}" placeholder="Enter product image URL" required />
-            </div>
-            <div>
-                <label for="productType">Product Type:</label>
-                <select id="productType" th:field="*{productType}" required>
-                    <option value="Sandwich">Sandwich</option>
-                    <option value="Drink">Drink</option>
-                    <option value="Snack">Snack</option>
-                </select>
-            </div>
-            <div>
-                <button type="submit">Create Product</button>
-            </div>
-        </form>
+        </div>
     </div>
 </body>
 </html>

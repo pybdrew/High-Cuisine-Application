@@ -12,7 +12,13 @@
             <div class="col-md-6 col-lg-5">
                 <div class="card shadow-lg p-4">
                     <h2 class="text-center mb-4">Login to Your Account</h2>
-                    <!--Login-->
+                    
+                    <!-- Error message for unregistered accounts -->
+                    <div th:if="${error}" class="alert alert-danger">
+                        <span th:text="${error}"></span>
+                    </div>
+
+                    <!--Login Form-->
                     <form th:action="@{/doLogin}" th:object="${loginModel}" method="post">
                         <div class="mb-3">
                             <label for="username" class="form-label">Username</label>
@@ -34,7 +40,8 @@
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
                     </form>
-                    <!--Register button-->
+
+                    <!-- Register button -->
                     <div class="text-center mt-4">
                         <span>Don't have an account?</span><br/>
                         <button class="btn btn-outline-secondary mt-2" onclick="window.location.href='/register'">

@@ -16,6 +16,7 @@ public class HomeModel
         this.productType = productType;
     }
 
+    // Getters and Setters
     public String getProductType() 
     {
         return productType;

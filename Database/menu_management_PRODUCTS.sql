@@ -4,6 +4,12 @@
 -- ------------------------------------------------------
 -- Server version	8.0.40
 
+-- Ensure the database exists
+CREATE DATABASE IF NOT EXISTS menu_management;
+
+-- Use the database
+USE menu_management;
+
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;

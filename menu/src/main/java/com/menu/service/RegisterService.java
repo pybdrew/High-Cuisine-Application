@@ -3,6 +3,8 @@ package com.menu.service;
 import com.menu.data.entity.UserEntity;
 import com.menu.data.repository.UsersRepository;
 import com.menu.model.RegisterModel;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,6 +12,7 @@ public class RegisterService
 {
     private final UsersRepository usersRepository;
 
+    @Autowired
     public RegisterService(UsersRepository usersRepository)
     {
         this.usersRepository = usersRepository;

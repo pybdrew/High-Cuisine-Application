@@ -1,54 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultTemp">
 <head>
-    <title>Create New Product</title>
+    <meta charset="UTF-8">
+    <title>Edit Menu</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
+    <!-- Allows admin to edit a menu -->
     <div layout:fragment="content" class="container mt-5">
         <div class="card">
             <div class="card-header">
-                <h1>Create a New Product</h1>
+                <h1>Edit Menu</h1>
             </div>
             <div class="card-body">
-                <form th:action="@{/product/create}" th:object="${product}" method="post">
+                <form th:action="@{/admin/menus/edit/{id}(id=${menu.id})}" th:object="${menu}" method="post">
                     <div class="form-group">
-                        <label for="name">Product Name:</label>
-                        <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter product name" required />
+                        <label for="name">Menu Name:</label>
+                        <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter menu name" required />
                         <div th:if="${#fields.hasErrors('name')}" class="text-danger">
                             <span th:each="err : ${#fields.errors('name')}" th:text="${err}"></span>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="description">Description:</label>
-                        <textarea id="description" th:field="*{description}" class="form-control" placeholder="Enter product description" required></textarea>
+                        <textarea id="description" th:field="*{description}" class="form-control" placeholder="Enter menu description" required></textarea>
                         <div th:if="${#fields.hasErrors('description')}" class="text-danger">
                             <span th:each="err : ${#fields.errors('description')}" th:text="${err}"></span>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="imageUrl">Image URL:</label>
-                        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" placeholder="Enter product image URL" required />
+                        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" placeholder="Enter menu image URL" />
                         <div th:if="${#fields.hasErrors('imageUrl')}" class="text-danger">
                             <span th:each="err : ${#fields.errors('imageUrl')}" th:text="${err}"></span>
                         </div>
                     </div>
+
                     <div class="form-group">
-                        <label for="productType">Product Type:</label>
-                        <select id="productType" th:field="*{productType}" class="form-control" required>
-                            <option value="Sandwich">Sandwich</option>
-                            <option value="Drink">Drink</option>
-                        </select>
-                        <div th:if="${#fields.hasErrors('productType')}" class="text-danger">
-                            <span th:each="err : ${#fields.errors('productType')}" th:text="${err}"></span>
+                        <label for="type">Menu Type:</label>
+                        <input type="text" id="type" th:field="*{type}" class="form-control" placeholder="Enter product type" required />
+                        <div th:if="${#fields.hasErrors('type')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('type')}" th:text="${err}"></span>
                         </div>
-                    </div>
+                    </div>                    
+
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Create Product</button>
+                        <button type="submit" class="btn btn-primary">Update Menu</button>
                     </div>
                 </form>
             </div>
+        </div>
+
+        <div class="text-center mt-3">
+            <a href="/admin/menus" class="btn btn-secondary">Back to Menus List</a>
         </div>
     </div>
 </body>

@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
 <head>
-    <title>Edit Product</title>
+    <title>Create New Product</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/styles.css}">
 </head>
 <body>
+    <!-- Allows admin to create a new Product and add it to the menu-->
     <div layout:fragment="content" class="container mt-5">
         <div class="card">
             <div class="card-header">
-                <h1>Edit Product</h1>
+                <h1>Create a New Product</h1>
             </div>
             <div class="card-body">
-                <form th:action="@{/product/edit/{id}(id=${product.id})}" th:object="${product}" method="post">
+                <form th:action="@{/admin/product/create}" th:object="${product}" method="post">
                     <div class="form-group">
                         <label for="name">Product Name:</label>
                         <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter product name" required />
@@ -29,23 +30,23 @@
                     </div>
                     <div class="form-group">
                         <label for="imageUrl">Image URL:</label>
-                        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" placeholder="Enter product image URL" />
+                        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" placeholder="Enter product image URL" required />
                         <div th:if="${#fields.hasErrors('imageUrl')}" class="text-danger">
                             <span th:each="err : ${#fields.errors('imageUrl')}" th:text="${err}"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="productType">Product Type:</label>
-                        <select id="productType" th:field="*{type}" class="form-control" required>
-                            <option value="Sandwich" th:selected="*{type} == 'Sandwich'">Sandwich</option>
-                            <option value="Drink" th:selected="*{type} == 'Drink'">Drink</option>
+                        <select id="productType" th:field="*{productType}" class="form-control" required>
+                            <option value="Sandwich">Sandwich</option>
+                            <option value="Drink">Drink</option>
                         </select>
-                        <div th:if="${#fields.hasErrors('type')}" class="text-danger">
-                            <span th:each="err : ${#fields.errors('type')}" th:text="${err}"></span>
+                        <div th:if="${#fields.hasErrors('productType')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('productType')}" th:text="${err}"></span>
                         </div>
                     </div>
                     <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Update Product</button>
+                        <button type="submit" class="btn btn-primary">Create Product</button>
                     </div>
                 </form>
             </div>
@@ -53,4 +54,3 @@
     </div>
 </body>
 </html>
-

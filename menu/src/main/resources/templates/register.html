@@ -1,53 +1,79 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
-    <head>
-        <meta charset="UTF-8">
-        <title>Registration</title>
-        <link rel="stylesheet" th:href="@{/styles.css}">
-    </head>
-    <body>
-        <script th:if="${param.registerSuccess}" type="text/javascript">
-            window.onload = function() 
-            {
-                alert("User created successfully!");
-            }
-        </script>
-            <div layout:fragment="content">
-            <div align="center">
-                <form class="regisForm container mt-4" th:action="@{/doRegister}" th:object="${registerModel}" method="post">
-                    <div class="card p-4 shadow-lg">
-                        <h2 class="text-center">Create Account</h2>
-                        <div class="mb-3">
-                            <label for="firstName" class="form-label">First Name:</label>
-                            <input type="text" class="form-control" th:field="*{firstName}" id="firstName" placeholder="First Name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="lastName" class="form-label">Last Name:</label>
-                            <input type="text" class="form-control" th:field="*{lastName}" id="lastName" placeholder="Last Name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="username" class="form-label">Username:</label>
-                            <div class="input-group">
-                                <span class="input-group-text">@</span>
-                                <input type="text" class="form-control" th:field="*{username}" id="username" placeholder="Username">
-                            </div>
-                            <div class="form-text text-muted">For privacy, avoid using your real name.</div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label">Password:</label>
-                            <input type="password" class="form-control" th:field="*{password}" id="password" placeholder="Password">
-                        </div>
-                        <div th:if="${#fields.hasErrors('*')}">
-                            <div class="alert alert-danger">
-                                <div th:each="err : ${#fields.errors('*')}">
-                                    <span th:text="${err}" class="fieldError"></span><br/>
-                                </div>
-                            </div>
-                        </div>
-                        <input type="submit" class="btn btn-primary w-100" value="Sign Up">
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="layouts/defaultTemp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <link rel="stylesheet" th:href="@{/styles.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <script th:if="${param.registerSuccess}" type="text/javascript">
+        window.onload = function()
+        {
+            alert("User created successfully!");
+        }
+    </script>
+    
+    <div layout:fragment="content" class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <form class="regisForm container mt-4" 
+              th:action="@{/doRegister}" 
+              th:object="${registerModel}" 
+              method="post" 
+              style="max-width: 500px;">
+
+            <div class="card p-4 shadow-lg">
+                <h2 class="text-center mb-4">Create Account</h2>
+
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First Name:</label>
+                    <input type="text" class="form-control" th:field="*{firstName}" id="firstName" placeholder="First Name" required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('firstName')}">
+                        <span th:each="err : ${#fields.errors('firstName')}" th:text="${err}"></span>
                     </div>
-                </form>
+                </div>
+
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last Name:</label>
+                    <input type="text" class="form-control" th:field="*{lastName}" id="lastName" placeholder="Last Name" required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('lastName')}">
+                        <span th:each="err : ${#fields.errors('lastName')}" th:text="${err}"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <div class="input-group">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control" th:field="*{username}" id="username" placeholder="Username" required>
+                    </div>
+                    <div class="form-text text-muted">For privacy, avoid using your real name.</div>
+                    <div class="text-danger" th:if="${#fields.hasErrors('username')}">
+                        <span th:each="err : ${#fields.errors('username')}" th:text="${err}"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" class="form-control" th:field="*{password}" id="password" placeholder="Password" required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('password')}">
+                        <span th:each="err : ${#fields.errors('password')}" th:text="${err}"></span>
+                    </div>
+                </div>
+
+                <div th:if="${#fields.hasErrors('*')}">
+                    <div class="alert alert-danger">
+                        <div th:each="err : ${#fields.errors('*')}">
+                            <span th:text="${err}" class="fieldError"></span><br/>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">Sign Up</button>
             </div>
-        </div>
-    </body>
+        </form>
+    </div>
+</body>
 </html>

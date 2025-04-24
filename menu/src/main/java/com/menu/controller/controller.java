@@ -197,14 +197,13 @@ public class controller
         List<ProductModel> drinks = new ArrayList<>();
         for (ProductEntity entity : drinkEntities)
         {
-            // Ensure the URL, name, description, and type are set in the ProductModel
-            ProductModel productModel = new ProductModel
-            (
-                entity.getName(),
-                entity.getDescription(),
-                entity.getImageUrl(),
-                entity.getType()
-            );
+            ProductModel productModel = new ProductModel();
+            productModel.setId(entity.getId());
+            productModel.setName(entity.getName());
+            productModel.setDescription(entity.getDescription());
+            productModel.setImageUrl(entity.getImageUrl());
+            productModel.setProductType(entity.getType());
+    
             drinks.add(productModel);
         }
     
@@ -212,11 +211,7 @@ public class controller
         model.addAttribute("drinks", drinks);
         return "drinks";
     }
-
-    /**
-     * Mapping for food menu(currently sandwiches)
-     * @return
-     */
+    
     @GetMapping("/sandwich")
     public String sandwichMenu(Model model)
     {
@@ -227,13 +222,13 @@ public class controller
         List<ProductModel> sandwiches = new ArrayList<>();
         for (ProductEntity entity : sandwichEntities)
         {
-            ProductModel productModel = new ProductModel
-            (
-                entity.getName(),
-                entity.getDescription(),
-                entity.getImageUrl(),
-                entity.getType()
-            );
+            ProductModel productModel = new ProductModel();
+            productModel.setId(entity.getId());
+            productModel.setName(entity.getName());
+            productModel.setDescription(entity.getDescription());
+            productModel.setImageUrl(entity.getImageUrl());
+            productModel.setProductType(entity.getType());
+    
             sandwiches.add(productModel);
         }
     
@@ -242,4 +237,3 @@ public class controller
         return "sandwiches";
     }
 }
-

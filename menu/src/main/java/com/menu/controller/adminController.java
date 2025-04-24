@@ -1,12 +1,18 @@
 package com.menu.controller;
 
+import org.springframework.http.HttpHeaders;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.menu.data.entity.ProductEntity;
 import com.menu.model.ProductModel;
 import com.menu.service.ProductService;
@@ -15,124 +21,104 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/product")
-public class adminController
-{
+public class adminController {
 
-    // Autowired Section
     private final ProductService productService;
 
     @Autowired
-    public adminController(ProductService productService)
-    {
+    public adminController(ProductService productService) {
         this.productService = productService;
     }
 
-    /**
-     * Admin Page
-     * @param model
-     * @return
-     */
     @GetMapping("")
-    public String showProductManagementPage(Model model)
-    {
-        // Get list of products from database
+    public String showProductManagementPage(Model model) {
         List<ProductEntity> products = productService.getAllProducts();
-        
-        // Add the products to the model so they can be accessed 
         model.addAttribute("products", products);
         return "product/productManagement";
     }
 
-    /**
-     * Create new products page handler
-     * @param model
-     * @return
-     */
+    @GetMapping("/image/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getProductImage(@PathVariable Long id) {
+        ProductEntity product = productService.getProductById(id);
+        if (product != null && product.getImageData() != null) {
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.IMAGE_JPEG);
+            return new ResponseEntity<>(product.getImageData(), headers, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
     @GetMapping("/create")
-    public String showCreateProductForm(Model model)
-    {
+    public String showCreateProductForm(Model model) {
         model.addAttribute("product", new ProductModel());
         return "product/createProduct";
     }
 
-    /**
-     * Update menu with new product and redirect user appropriately
-     * @param product
-     * @param bindingResult
-     * @param model
-     * @return
-     */
     @PostMapping("/create")
-    public String createProduct(@ModelAttribute("product") @Valid ProductModel product, BindingResult bindingResult, Model model)
-    {
-        // Return page to display errors
-        if (bindingResult.hasErrors())
-        {
+    public String createProduct(@ModelAttribute("product") @Valid ProductModel product, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             return "product/createProduct";
         }
-        
+
         productService.createProduct(product);
 
-        System.out.println("Product created: " + product);
-
-        // Redirect to appropriate page upon creation
-        if ("Drink".equalsIgnoreCase(product.getProductType()))
-        {
+        if ("Drink".equalsIgnoreCase(product.getProductType())) {
             return "redirect:/drink";
-        }
-        else if ("Sandwich".equalsIgnoreCase(product.getProductType()))
-        {
+        } else if ("Sandwich".equalsIgnoreCase(product.getProductType())) {
             return "redirect:/sandwich";
-        }
-        else
-        {
+        } else {
             return "redirect:/";
         }
     }
 
-    /**
-     * Delete product by ID
-     * @param productId
-     * @return
-     */
     @GetMapping("/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Long productId)
-    {
+    public String deleteProduct(@PathVariable("id") Long productId) {
         productService.deleteProduct(productId);
         return "redirect:/product";
     }
 
-    /**
-     * Displays edit product page for specific product identified by given ID
-     * @param id
-     * @param model
-     * @return
-     */
     @GetMapping("/edit/{id}")
-    public String showEditProductPage(@PathVariable("id") Long id, Model model)
-    {
+    public String showEditProductPage(@PathVariable("id") Long id, Model model) {
         ProductEntity product = productService.getProductById(id);
-        if (product != null)
-        {
-            model.addAttribute("product", product);
-            return "product/editProduct"; 
-        } 
-        else
-        {
-            return "redirect:/product"; 
+        if (product != null) {
+            ProductModel modelForm = new ProductModel();
+            modelForm.setId(product.getId());
+            modelForm.setName(product.getName());
+            modelForm.setDescription(product.getDescription());
+            modelForm.setImageUrl(product.getImageUrl());
+            modelForm.setProductType(product.getType());
+            model.addAttribute("product", modelForm);
+            return "product/editProduct";
+        } else {
+            return "redirect:/product";
         }
     }
 
-    /**
-     * Handles updates (edits) to products
-     */
     @PostMapping("/edit/{id}")
-    public String updateProduct(@PathVariable("id") Long id, @ModelAttribute ProductEntity product)
-    {
-        // Set the product's ID to make sure we update the correct one
-        product.setId(id);  
-        productService.updateProduct(product);
-        // Redirect to management page after updating
-        return "redirect:/product"; 
+    public String updateProduct(@PathVariable("id") Long id,
+                                @ModelAttribute("product") @Valid ProductModel productModel,
+                                BindingResult bindingResult,
+                                Model model) {
+    
+        // Get the existing product to verify if it already has image data or URL
+        ProductEntity existingProduct = productService.getProductById(id);
+    
+        boolean noFileProvided = productModel.getImageFile() == null || productModel.getImageFile().isEmpty();
+        boolean noUrlProvided = productModel.getImageUrl() == null || productModel.getImageUrl().isBlank();
+        boolean noExistingImage = (existingProduct.getImageData() == null || existingProduct.getImageData().length == 0)
+                                  && (existingProduct.getImageUrl() == null || existingProduct.getImageUrl().isBlank());
+    
+        if (noFileProvided && noUrlProvided && noExistingImage) {
+            bindingResult.rejectValue("imageUrl", "error.product", "Please provide an image file or URL.");
+        }
+    
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("productId", id);
+            return "product/editProduct";
+        }
+    
+        productService.updateProduct(id, productModel);
+        return "redirect:/product";
     }
 }

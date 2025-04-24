@@ -17,7 +17,14 @@
             <!-- Drink Cards -->
             <div th:each="drink : ${drinks}" class="col">
                 <div class="card h-100">
-                    <img th:src="@{${drink.imageUrl}}" class="card-img-top drink-img" alt="Drink">
+                    <img th:if="${drink.imageUrl != null and drink.imageUrl != ''}"
+                         th:src="@{${drink.imageUrl}}"
+                         class="card-img-top drink-img" alt="Drink">
+
+                    <img th:if="${drink.imageUrl == null or drink.imageUrl == ''}"
+                         th:src="@{'/product/image/' + ${drink.id}}"
+                         class="card-img-top drink-img" alt="Drink">
+
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 th:text="${drink.name}" class="card-title"></h5>

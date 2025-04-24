@@ -16,7 +16,12 @@
             <!--Sandwich cards-->
             <div th:each="sandwich : ${sandwiches}" class="col">
                 <div class="card h-100">
-                    <img th:src="@{${sandwich.imageUrl}}" class="card-img-top drink-img" alt="Sandwich">
+                    <img th:if="${sandwich.imageUrl != null and sandwich.imageUrl != ''}" 
+                         th:src="@{${sandwich.imageUrl}}" 
+                         class="card-img-top drink-img" alt="Sandwich">
+                    <img th:if="${sandwich.imageUrl == null or sandwich.imageUrl == ''}" 
+                         th:src="@{'/product/image/' + ${sandwich.id}}" 
+                         class="card-img-top drink-img" alt="Sandwich">
                     <div class="card-body text-center d-flex flex-column justify-content-between">
                         <div class="card-text-wrapper">
                             <h5 th:text="${sandwich.name}" class="card-title"></h5>

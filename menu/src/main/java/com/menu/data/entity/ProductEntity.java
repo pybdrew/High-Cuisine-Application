@@ -23,6 +23,17 @@ public class ProductEntity
     @Column("TYPE")
     private String type;
 
+    @Column("IMAGE_DATA")
+private byte[] imageData;
+
+public byte[] getImageData() {
+    return imageData;
+}
+
+public void setImageData(byte[] imageData) {
+    this.imageData = imageData;
+}
+
     // Non-default constructor
     public ProductEntity(Long id, String name, String description, String type)
     {

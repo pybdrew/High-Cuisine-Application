@@ -12,7 +12,7 @@
                 <h1>Create a New Product</h1>
             </div>
             <div class="card-body">
-                <form th:action="@{/product/create}" th:object="${product}" method="post">
+                <form th:action="@{/product/create}" th:object="${product}" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="name">Product Name:</label>
                         <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter product name" required />
@@ -28,23 +28,29 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="imageUrl">Image URL:</label>
-                        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" placeholder="Enter product image URL" required />
+                        <label for="imageUrl">Image URL (optional if uploading):</label>
+                        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" placeholder="Enter product image URL" />
                         <div th:if="${#fields.hasErrors('imageUrl')}" class="text-danger">
                             <span th:each="err : ${#fields.errors('imageUrl')}" th:text="${err}"></span>
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="imageFile">Upload Image (optional):</label>
+                        <input type="file" id="imageFile" th:field="*{imageFile}" class="form-control" />
+                    </div>
+                    <div class="form-group">
                         <label for="productType">Product Type:</label>
                         <select id="productType" th:field="*{productType}" class="form-control" required>
+                            <option value="">-- Select --</option>
                             <option value="Sandwich">Sandwich</option>
                             <option value="Drink">Drink</option>
+                            <option value="Snack">Snack</option>
                         </select>
                         <div th:if="${#fields.hasErrors('productType')}" class="text-danger">
                             <span th:each="err : ${#fields.errors('productType')}" th:text="${err}"></span>
                         </div>
                     </div>
-                    <div class="d-grid gap-2">
+                    <div class="d-grid gap-2 mt-4">
                         <button type="submit" class="btn btn-primary">Create Product</button>
                     </div>
                 </form>

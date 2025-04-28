@@ -2,10 +2,13 @@ package com.menu.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.menu.data.entity.MenuEntity;
 import com.menu.data.entity.ProductEntity;
@@ -16,16 +19,14 @@ import com.menu.service.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-
-
 @Controller
 public class controller
 {
-
     private final ProductsRepository productsRepository;
     private final MenuRepository menuRepository;
     private final LoginService loginService;
     private final RegisterService registerService;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Constructor-based injection
@@ -34,12 +35,13 @@ public class controller
      * @param loginService
      * @param registerService
      */
-    public controller(ProductsRepository productsRepository, MenuRepository menuRepository, LoginService loginService, RegisterService registerService)
+    public controller(ProductsRepository productsRepository, MenuRepository menuRepository, LoginService loginService, RegisterService registerService, PasswordEncoder passwordEncoder)
     {
         this.productsRepository = productsRepository;
         this.menuRepository = menuRepository;
         this.loginService = loginService;
         this.registerService = registerService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/")
@@ -66,9 +68,6 @@ public class controller
         model.addAttribute("title", "Home");
         return "home";
     }
-    
-
-
 
     /**
      * Mapping for login
@@ -82,49 +81,14 @@ public class controller
         return "login";
     }
 
-    /**
-     * Check fields for login
-     * @param loginModel
-     * @param bindingResult
-     * @param model
-     * @return
-     */
-    @PostMapping("/doLogin")
-    public String doLogin(@Valid LoginModel loginModel, BindingResult bindingResult, Model model, HttpSession session)
+
+    // Logout
+    @GetMapping("/logout")
+    public String logout(HttpSession session)
     {
-        System.out.println(String.format("Form with username of %s and Password of %s", loginModel.getUsername(), loginModel.getPassword()));
-
-        // If there are validation errors return to login page
-        if (bindingResult.hasErrors())
-        {
-            model.addAttribute("title", "Login Form");
-            return "login";
-        }
-
-        // Call LoginService to validate username and password
-        String role = loginService.validateLogin(loginModel.getUsername(), loginModel.getPassword());
-
-        // If no matching user is found show error message
-        if (role == null)
-        {
-            model.addAttribute("error", "Account not registered, please register.");
-            return "login";
-        }
-
-        // Store user role in session if login successful
-        session.setAttribute("userRole", role);
-
-        // Redirect based on user role (Admin or regular user)
-        if (role.equals("admin"))
-        {
-            return "redirect:/admin";
-        }
-        else
-        {
-            return "redirect:/";
-        }
+        session.invalidate();
+        return "redirect:/login";
     }
-
 
     /**
      * Mapping for register
@@ -164,8 +128,11 @@ public class controller
             return "register";
         }
     
-        boolean success = registerService.registerUser(registerModel);
-    
+        // Encode the password before saving
+        String encodedPassword = passwordEncoder.encode(registerModel.getPassword());
+
+        // Call RegisterService to handle the actual registration process
+        boolean success = registerService.registerUser(registerModel, encodedPassword);
 
         if (!success)
         {
@@ -175,7 +142,6 @@ public class controller
     
         return "redirect:/";
     }
-    
 
     /**
      * Gets admin to admin page
@@ -195,7 +161,6 @@ public class controller
         model.addAttribute("title", "Admin Home");
         return "adminHome";
     }
-
 
     /**
      * Mapping for drink menu
@@ -256,4 +221,3 @@ public class controller
         return "sandwiches";
     }
 }
-

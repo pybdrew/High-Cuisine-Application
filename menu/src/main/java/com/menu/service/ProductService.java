@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.menu.data.entity.ProductEntity;
@@ -17,7 +16,6 @@ public class ProductService
 
     private final ProductsRepository productsRepository;
 
-    @Autowired
     public ProductService(ProductsRepository productsRepository)
     {
         this.productsRepository = productsRepository;

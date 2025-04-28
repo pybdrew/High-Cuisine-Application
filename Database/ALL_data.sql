@@ -45,9 +45,11 @@ CREATE TABLE `users` (
 --
 
 LOCK TABLES `users` WRITE;
+
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+
 INSERT INTO `users` VALUES 
-(1,'admin','Password!','admin','Admin','User')
+(1, 'admin', '$2a$10$ANxrhYgXZjWWqh.cKa/roOpvMpTFuzli6nNzun286p8Slvd7Miq7K', 'admin', 'Admin', 'User');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -4,29 +4,30 @@ import com.menu.data.entity.MenuEntity;
 import com.menu.data.repository.MenuRepository;
 import com.menu.model.HomeModel;
 
-import jakarta.validation.Valid;
-
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MenuService {
+public class MenuService
+{
 
     private final MenuRepository menuRepository;
 
-    public MenuService(MenuRepository menuRepository) {
+    public MenuService(MenuRepository menuRepository)
+    {
         this.menuRepository = menuRepository;
     }
 
     // Get all menus
-    public Iterable<MenuEntity> getAllMenus() {
+    public Iterable<MenuEntity> getAllMenus()
+    {
         return menuRepository.findAll();
     }
 
     // Create Menu entity
-    public MenuEntity createMenu(HomeModel homeModel) {
+    public MenuEntity createMenu(HomeModel homeModel)
+    {
         // Convert HomeModel to MenuEntity
         MenuEntity menuEntity = new MenuEntity();
         menuEntity.setName(homeModel.getName());
@@ -40,18 +41,24 @@ public class MenuService {
     
 
     // Get a menu by ID
-    public MenuEntity getMenuById(Long id) {
+    public MenuEntity getMenuById(Long id)
+    {
         Optional<MenuEntity> menu = menuRepository.findById(id);
-        return menu.orElse(null); // Return the menu or null if not found
+        // Return the menu or null if not found
+        return menu.orElse(null);
     }
 
     // Update an existing menu
-    public void updateMenu(MenuEntity menuEntity) {
-        menuRepository.save(menuEntity); // Save the updated menu
+    public void updateMenu(MenuEntity menuEntity)
+    {
+        // Save the updated menu
+        menuRepository.save(menuEntity);
     }
 
     // Delete a menu by ID
-    public void deleteMenu(Long id) {
-        menuRepository.deleteById(id); // Delete the menu from the database
+    public void deleteMenu(Long id)
+    {
+        // Delete the menu from the database
+        menuRepository.deleteById(id);
     }
 }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+      layout:decorate="layouts/defaultTemp">
+<head>
+    <title>Create New User</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <!-- Allow admin to create a new user and assign a role separate from RegisterModel -->
+    <div layout:fragment="content" class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1>Create a New User</h1>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/admin/user/create}" th:object="${registerModel}" method="post">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" th:field="*{username}" class="form-control" placeholder="Enter username" required />
+                        <div th:if="${#fields.hasErrors('username')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('username')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" th:field="*{password}" class="form-control" placeholder="Enter password" required />
+                        <div th:if="${#fields.hasErrors('password')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('password')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" id="firstName" th:field="*{firstName}" class="form-control" placeholder="Enter first name" required />
+                        <div th:if="${#fields.hasErrors('firstName')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('firstName')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="lastName">Last Name:</label>
+                        <input type="text" id="lastName" th:field="*{lastName}" class="form-control" placeholder="Enter last name" required />
+                        <div th:if="${#fields.hasErrors('lastName')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('lastName')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+    
+                    <div class="form-group">
+                        <label for="role">Role:</label>
+                        <select name="role" id="role" class="form-control" required>
+                            <option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+                        </select>
+                    </div>
+    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Create User</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

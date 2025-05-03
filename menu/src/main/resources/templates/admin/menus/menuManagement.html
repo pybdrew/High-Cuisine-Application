@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultTemp">
+<head>
+    <meta charset="UTF-8">
+    <title>Menu Management</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <div layout:fragment="content" class="container mt-5">
+        <h1 class="text-center">Menu Management</h1>
+        <p class="text-center">Here, you can manage your menus.</p>
+        
+        <!-- Button to create a new menu -->
+        <div class="text-center mb-4">
+            <a href="/admin/menus/create" class="btn btn-primary">Create New Menu</a>
+        </div>
+
+        <!-- Table to display menus -->
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Image URL</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loop through the menus and display them -->
+                <tr th:each="menu : ${menus}">
+                    <td th:text="${menu.name}"></td>
+                    <td th:text="${menu.description}"></td>
+                    <td th:text="${menu.imageUrl}"></td>
+                    <td th:text="${menu.type}"></td>
+                    <td>
+                        <a th:href="@{'/admin/menus/edit/' + ${menu.id}}" class="btn btn-warning btn-sm">Edit</a>
+                        <a th:href="@{'/admin/menus/delete/' + ${menu.id}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this menu?')">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

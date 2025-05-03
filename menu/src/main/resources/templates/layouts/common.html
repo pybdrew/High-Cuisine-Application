@@ -9,6 +9,7 @@
 </head>
 <body>
   <div th:fragment="header">
+    <!-- Nav bar for site -->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
       <div class="container-fluid">
         <a class="navbar-brand" th:href="@{/}">
@@ -21,7 +22,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <!-- Login/Register moved to top -->
             <li class="nav-item">
               <a class="nav-link" th:href="@{/login}">Login/Register</a>
             </li>

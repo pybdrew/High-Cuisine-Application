@@ -2,31 +2,77 @@ package com.menu.service;
 
 import com.menu.data.entity.UserEntity;
 import com.menu.data.repository.UsersRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.menu.model.RegisterModel;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
-public class LoginService 
+public class LoginService
 {
     private final UsersRepository usersRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public LoginService(UsersRepository usersRepository) 
+    public LoginService(UsersRepository usersRepository)
     {
         this.usersRepository = usersRepository;
+        // Initialize the encoder
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public String validateLogin(String username, String password) 
+    public String validateLogin(String username, String password)
     {
-        // Attempt to find the user by username
         UserEntity user = usersRepository.findByUsername(username);
-
-        // Check if the user exists and the password matches
-        if (user != null && user.getPassword().equals(password)) 
+        if (user != null && passwordEncoder.matches(password, user.getPassword()))
         {
-            // Return the role of the user (assuming it's stored in the UserEntity)
-            return user.getRole();  
+            // Adding ROLE_ prefix to match SecurityConfig
+            return "ROLE_" + user.getRole();
         }
         return null;
+    }
+
+    public List<UserEntity> getAllUsers()
+    {
+        return (List<UserEntity>) usersRepository.findAll();
+    }
+
+    public void saveUser(RegisterModel registerModel, String role)
+    {
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(registerModel.getUsername());
+        // Encode password before saving
+        userEntity.setPassword(passwordEncoder.encode(registerModel.getPassword()));
+        userEntity.setFirstName(registerModel.getFirstName());
+        userEntity.setLastName(registerModel.getLastName());
+        userEntity.setRole(role);
+
+        usersRepository.save(userEntity);
+    }
+
+    public UserEntity getUserById(Long id)
+    {
+        return usersRepository.findById(id).orElse(null);
+    }
+
+    public void updateUser(Long id, RegisterModel model, String role)
+    {
+        UserEntity user = getUserById(id);
+        if (user != null)
+        {
+            user.setUsername(model.getUsername());
+            // Encode password before updating
+            user.setPassword(passwordEncoder.encode(model.getPassword()));
+            user.setFirstName(model.getFirstName());
+            user.setLastName(model.getLastName());
+            user.setRole(role);
+            usersRepository.save(user);
+        }
+    }
+
+    public void deleteUser(Long id)
+    {
+        usersRepository.deleteById(id);
     }
 }

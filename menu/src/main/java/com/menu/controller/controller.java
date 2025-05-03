@@ -3,56 +3,69 @@ package com.menu.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.menu.data.entity.MenuEntity;
 import com.menu.data.entity.ProductEntity;
-import com.menu.data.repository.ProductsRepository;
+import com.menu.data.repository.*;
 import com.menu.model.*;
 import com.menu.service.*;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
-
-
 @Controller
 public class controller
 {
-
-    // Autowire Section
-    @Autowired
-    private ProductsRepository productsRepository;
-
+    private final ProductsRepository productsRepository;
+    private final MenuRepository menuRepository;
     private final LoginService loginService;
     private final RegisterService registerService;
-    
-    public controller(LoginService loginService, RegisterService registerService) 
-    {
-        this.loginService = loginService;
-        this.registerService = registerService;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     /**
-     * Mapping for homepage
-     * @param model
-     * @return
+     * Constructor-based injection
+     * @param productsRepository
+     * @param menuRepository
+     * @param loginService
+     * @param registerService
      */
+    public controller(ProductsRepository productsRepository, MenuRepository menuRepository, LoginService loginService, RegisterService registerService, PasswordEncoder passwordEncoder)
+    {
+        this.productsRepository = productsRepository;
+        this.menuRepository = menuRepository;
+        this.loginService = loginService;
+        this.registerService = registerService;
+        this.passwordEncoder = passwordEncoder;
+    }
+
     @GetMapping("/")
     public String home(Model model)
     {
-        // TODO - DB connect 
+        // Fetch all menus from the database
+        Iterable<MenuEntity> menuEntities = menuRepository.findAll();
+    
+        // Map to HomeModel for displaying on the homepage
         List<HomeModel> menus = new ArrayList<>();
-        menus.add(new HomeModel("Drinks", "Warm up with our curated selection of hot and cold beverages.",
-        "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80", "drink"));
-        menus.add(new HomeModel("Sandwiches", "Explore our handcrafted sandwiches made with the freshest ingredients.",
-        "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", "sandwich"));
-
+        for (MenuEntity entity : menuEntities)
+        {
+            HomeModel homeModel = new HomeModel(
+                entity.getName(),
+                entity.getDescription(),
+                entity.getImageUrl(),
+                entity.getType()
+            );
+            menus.add(homeModel);
+        }
+    
+        // Add data to the model for Thymeleaf template
         model.addAttribute("menus", menus);
         model.addAttribute("title", "Home");
-        model.addAttribute("content", "Hello, welcome to the homepage!");
         return "home";
     }
 
@@ -68,49 +81,14 @@ public class controller
         return "login";
     }
 
-    /**
-     * Check fields for login
-     * @param loginModel
-     * @param bindingResult
-     * @param model
-     * @return
-     */
-    @PostMapping("/doLogin")
-    public String doLogin(@Valid LoginModel loginModel, BindingResult bindingResult, Model model, HttpSession session)
+
+    // Logout
+    @GetMapping("/logout")
+    public String logout(HttpSession session)
     {
-        System.out.println(String.format("Form with username of %s and Password of %s", loginModel.getUsername(), loginModel.getPassword()));
-
-        // If there are validation errors return to login page
-        if (bindingResult.hasErrors())
-        {
-            model.addAttribute("title", "Login Form");
-            return "login";
-        }
-
-        // Call LoginService to validate username and password
-        String role = loginService.validateLogin(loginModel.getUsername(), loginModel.getPassword());
-
-        // If no matching user is found show error message
-        if (role == null)
-        {
-            model.addAttribute("error", "Account not registered, please register.");
-            return "login";
-        }
-
-        // Store user role in session if login successful
-        session.setAttribute("userRole", role);
-
-        // Redirect based on user role (Admin or regular user)
-        if (role.equals("admin"))
-        {
-            return "redirect:/adminHome";
-        }
-        else
-        {
-            return "redirect:/";
-        }
+        session.invalidate();
+        return "redirect:/login";
     }
-
 
     /**
      * Mapping for register
@@ -150,8 +128,11 @@ public class controller
             return "register";
         }
     
-        boolean success = registerService.registerUser(registerModel);
-    
+        // Encode the password before saving
+        String encodedPassword = passwordEncoder.encode(registerModel.getPassword());
+
+        // Call RegisterService to handle the actual registration process
+        boolean success = registerService.registerUser(registerModel, encodedPassword);
 
         if (!success)
         {
@@ -161,7 +142,6 @@ public class controller
     
         return "redirect:/";
     }
-    
 
     /**
      * Gets admin to admin page
@@ -182,7 +162,6 @@ public class controller
         return "adminHome";
     }
 
-
     /**
      * Mapping for drink menu
      * @return
@@ -197,13 +176,14 @@ public class controller
         List<ProductModel> drinks = new ArrayList<>();
         for (ProductEntity entity : drinkEntities)
         {
-            ProductModel productModel = new ProductModel();
-            productModel.setId(entity.getId());
-            productModel.setName(entity.getName());
-            productModel.setDescription(entity.getDescription());
-            productModel.setImageUrl(entity.getImageUrl());
-            productModel.setProductType(entity.getType());
-    
+            // get product information and add model to drinks
+            ProductModel productModel = new ProductModel
+            (
+                entity.getName(),
+                entity.getDescription(),
+                entity.getImageUrl(),
+                entity.getType()
+            );
             drinks.add(productModel);
         }
     
@@ -211,7 +191,11 @@ public class controller
         model.addAttribute("drinks", drinks);
         return "drinks";
     }
-    
+
+    /**
+     * Mapping for food menu(currently sandwiches)
+     * @return
+     */
     @GetMapping("/sandwich")
     public String sandwichMenu(Model model)
     {
@@ -222,13 +206,13 @@ public class controller
         List<ProductModel> sandwiches = new ArrayList<>();
         for (ProductEntity entity : sandwichEntities)
         {
-            ProductModel productModel = new ProductModel();
-            productModel.setId(entity.getId());
-            productModel.setName(entity.getName());
-            productModel.setDescription(entity.getDescription());
-            productModel.setImageUrl(entity.getImageUrl());
-            productModel.setProductType(entity.getType());
-    
+            ProductModel productModel = new ProductModel
+            (
+                entity.getName(),
+                entity.getDescription(),
+                entity.getImageUrl(),
+                entity.getType()
+            );
             sandwiches.add(productModel);
         }
     

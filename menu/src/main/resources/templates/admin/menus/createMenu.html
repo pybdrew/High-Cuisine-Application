@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
+<head>
+    <title>Create New Menu</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+    <!-- Allows admin to create a new Menu -->
+    <div layout:fragment="content" class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1>Create a New Menu</h1>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/admin/menus/create}" th:object="${menu}" method="post">
+                    <div class="form-group">
+                        <label for="name">Menu Name:</label>
+                        <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter menu name" required />
+                        <div th:if="${#fields.hasErrors('name')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('name')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" th:field="*{description}" class="form-control" placeholder="Enter menu description" required />
+                        <div th:if="${#fields.hasErrors('description')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('description')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="imageUrl">Image URL:</label>
+                        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" placeholder="Enter menu image URL" required />
+                        <div th:if="${#fields.hasErrors('imageUrl')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('imageUrl')}" th:text="${err}"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="productType">Menu Type:</label>
+                        <input type="text" id="productType" th:field="*{productType}" class="form-control" placeholder="Enter menu type (e.g., Sandwich or Drink)" required />
+                        <div th:if="${#fields.hasErrors('productType')}" class="text-danger">
+                            <span th:each="err : ${#fields.errors('productType')}" th:text="${err}"></span>
+                        </div>
+                    </div>                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Create Menu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

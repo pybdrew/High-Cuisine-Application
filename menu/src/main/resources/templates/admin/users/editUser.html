@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
+<head>
+    <title>Edit User</title>
+</head>
+<body>
+    <!-- Edit users page for admin -->
+    <div layout:fragment="content" class="container mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1>Edit User</h1>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/admin/user/edit/{id}(id=${userId})}" th:object="${registerModel}" method="post">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" th:field="*{username}" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="text" th:field="*{password}" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" th:field="*{firstName}" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" th:field="*{lastName}" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select name="role" class="form-control">
+                            <option th:each="role : ${roles}" th:value="${role}"
+                                    th:text="${role}"
+                                    th:selected="${role == currentRole}"></option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

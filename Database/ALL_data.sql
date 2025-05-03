@@ -9,7 +9,7 @@ CREATE DATABASE IF NOT EXISTS menu_management;
 
 -- Use the database
 USE menu_management;
-
+UNLOCK TABLES;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -105,6 +105,8 @@ CREATE TABLE `MENUS` (
   `ID` INT NOT NULL AUTO_INCREMENT,
   `NAME` VARCHAR(100) NOT NULL,
   `DESCRIPTION` VARCHAR(255) DEFAULT NULL,
+  `IMAGE_URL` VARCHAR(255) DEFAULT NULL,
+  `TYPE` VARCHAR(50) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -115,7 +117,7 @@ CREATE TABLE `MENUS` (
 
 LOCK TABLES `MENUS` WRITE;
 /*!40000 ALTER TABLE `MENUS` DISABLE KEYS */;
-INSERT INTO `MENUS` (`ID`, `NAME`, `DESCRIPTION`) VALUES
+INSERT INTO `MENUS` (`ID`, `NAME`, `DESCRIPTION`, `IMAGE_URL`, `TYPE`) VALUES
 -- ID, NAME, DESCRIPTION, IMAGE_URL, TYPE
 (1, 'Drinks', 'Warm up with our curated selection of hot and cold beverages.', 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80', 'drink'),
 (2, 'Sandwiches', 'Explore our handcrafted sandwiches made with the freshest ingredients.', 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80', 'sandwich');

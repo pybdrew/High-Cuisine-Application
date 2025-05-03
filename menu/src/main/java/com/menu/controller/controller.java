@@ -179,6 +179,7 @@ public class controller
             // get product information and add model to drinks
             ProductModel productModel = new ProductModel
             (
+                entity.getId(), 
                 entity.getName(),
                 entity.getDescription(),
                 entity.getImageUrl(),
@@ -208,6 +209,7 @@ public class controller
         {
             ProductModel productModel = new ProductModel
             (
+                entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
                 entity.getImageUrl(),

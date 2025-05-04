@@ -56,9 +56,36 @@ public class ProductService
         return productsRepository.findById(id).orElse(null); 
     }
 
-    public void updateProduct(ProductEntity product)
-    {
-        // Save updated product
-        productsRepository.save(product); 
+    public void updateProduct(Long id, ProductModel productModel) {
+        ProductEntity existingProduct = getProductById(id);
+        if (existingProduct == null) {
+            return; // or throw exception
+        }
+    
+        // Update name, description, and type
+        existingProduct.setName(productModel.getName());
+        existingProduct.setDescription(productModel.getDescription());
+        existingProduct.setType(productModel.getProductType());
+    
+        try {
+            boolean hasNewFile = productModel.getImageFile() != null && !productModel.getImageFile().isEmpty();
+            boolean hasImageUrl = productModel.getImageUrl() != null && !productModel.getImageUrl().isBlank();
+    
+            if (hasNewFile) {
+                // Save uploaded file and clear URL
+                existingProduct.setImageData(productModel.getImageFile().getBytes());
+                existingProduct.setImageUrl(null);
+            } else if (hasImageUrl) {
+                // Save URL and clear file
+                existingProduct.setImageUrl(productModel.getImageUrl());
+                existingProduct.setImageData(null);
+            }
+    
+            // If neither provided, do not update image fields
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    
+        productsRepository.save(existingProduct);
     }
 }

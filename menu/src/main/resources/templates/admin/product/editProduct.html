@@ -1,57 +1,101 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layouts/defaultTemp">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layouts/defaultTemp">
 <head>
     <title>Edit Product</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/styles.css}">
+    <style>
+        .image-preview {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .image-preview img {
+            border-radius: 6px;
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
-    <!-- Allows admin to edit a product on the menu -->
-    <div layout:fragment="content" class="container mt-5">
-        <div class="card">
-            <div class="card-header">
-                <h1>Edit Product</h1>
-            </div>
-            <div class="card-body">
-                <form th:action="@{/admin/product/edit/{id}(id=${product.id})}" th:object="${product}" method="post">
-                    <div class="form-group">
-                        <label for="name">Product Name:</label>
-                        <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter product name" required />
-                        <div th:if="${#fields.hasErrors('name')}" class="text-danger">
-                            <span th:each="err : ${#fields.errors('name')}" th:text="${err}"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description:</label>
-                        <textarea id="description" th:field="*{description}" class="form-control" placeholder="Enter product description" required></textarea>
-                        <div th:if="${#fields.hasErrors('description')}" class="text-danger">
-                            <span th:each="err : ${#fields.errors('description')}" th:text="${err}"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="imageUrl">Image URL:</label>
-                        <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" placeholder="Enter product image URL" />
-                        <div th:if="${#fields.hasErrors('imageUrl')}" class="text-danger">
-                            <span th:each="err : ${#fields.errors('imageUrl')}" th:text="${err}"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="productType">Product Type:</label>
-                        <select id="productType" th:field="*{type}" class="form-control" required>
-                            <option value="Sandwich" th:selected="*{type} == 'Sandwich'">Sandwich</option>
-                            <option value="Drink" th:selected="*{type} == 'Drink'">Drink</option>
-                        </select>
-                        <div th:if="${#fields.hasErrors('type')}" class="text-danger">
-                            <span th:each="err : ${#fields.errors('type')}" th:text="${err}"></span>
-                        </div>
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Update Product</button>
-                    </div>
-                </form>
-            </div>
+<div layout:fragment="content" class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h1>Edit Product</h1>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/admin/product/edit/{id}(id=${product.id})}"
+                  th:object="${product}" method="post" enctype="multipart/form-data">
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Product Name:</label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control" required />
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" th:field="*{description}" class="form-control" required></textarea>
+                </div>
+
+                <!-- Image URL -->
+                <div class="form-group">
+                    <label for="imageUrl">Image URL (leave blank if uploading):</label>
+                    <input type="text" id="imageUrl" th:field="*{imageUrl}" class="form-control" />
+                </div>
+
+<!-- File Upload -->
+<div class="form-group">
+    <label for="imageFile">Upload New Image (optional):</label>
+    <input type="file" id="imageFile" name="imageFile" class="form-control-file" />
+    <small class="form-text text-warning mt-1">
+        Uploading a new image will remove the current image URL and replace it with this file.
+    </small>
+</div>
+
+<!-- Current Image Preview -->
+<div class="form-group image-preview">
+    <label>Current Image Preview:</label><br/>
+    <div>
+        <img th:if="${product.imageUrl != null and !#strings.isEmpty(product.imageUrl)}"
+             th:src="${product.imageUrl}"
+             alt="Image from URL" />
+             
+        <img th:if="${product.imageUrl == null or #strings.isEmpty(product.imageUrl)}"
+             th:src="@{'/admin/product/image/' + ${product.id}}"
+             alt="Image from BLOB" />
+    </div>
+</div>
+
+                <!-- Product Type -->
+                <div class="form-group">
+                    <label for="productType">Product Type:</label>
+                    <select id="productType" th:field="*{productType}" class="form-control" required>
+                        <option value="Sandwich">Sandwich</option>
+                        <option value="Drink">Drink</option>
+                    </select>
+                </div>
+
+                <!-- Submit -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-block mt-3">Update Product</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
+<script>
+    document.getElementById("imageFile").addEventListener("change", function () {
+        if (this.files.length > 0) {
+            // Clear the image URL input
+            document.getElementById("imageUrl").value = "";
+        }
+    });
+</script>
 </body>
 </html>
-

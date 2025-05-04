@@ -95,4 +95,6 @@ public class ProductModel {
     public void setProductType(String productType) {
         this.productType = productType;
     }
+
+    
 }

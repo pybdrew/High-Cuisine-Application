@@ -11,4 +11,7 @@ import com.menu.data.entity.ProductEntity;
 public interface ProductsRepository extends CrudRepository<ProductEntity, Long>
 {
     List<ProductEntity> findByType(String type);  
+
+    // Custom query to find product by name
+    ProductEntity findByName(String name);
 }

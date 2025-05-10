@@ -13,57 +13,64 @@ import com.menu.data.repository.UsersRepository;
 
 import java.util.*;
 
+/**
+ * Service class that implements Spring Security's {@link org.springframework.security.core.userdetails.UserDetailsService}.
+ * 
+ * Responsible for loading user details during authentication based on the username.
+ */
 @Service
 public class UsersService implements org.springframework.security.core.userdetails.UserDetailsService
 {
-
     private final UsersRepository usersRepository;
-    // Constructor for dependency injection
+
+    /**
+     * Constructs the {@code UsersService} with injected dependencies.
+     *
+     * @param usersRepository the repository for accessing user data
+     * @param passwordEncoder the password encoder (not used directly but required for context)
+     */
     public UsersService(UsersRepository usersRepository, PasswordEncoder passwordEncoder)
     {
         this.usersRepository = usersRepository;
     }
 
+    /**
+     * Loads the user details by username for Spring Security authentication.
+     *
+     * @param username the username to look up
+     * @return a Spring Security {@link UserDetails} object with roles and credentials
+     * @throws UsernameNotFoundException if no user is found with the given username
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-        // Retrieve user from the repository based on the username
         UserEntity userEntity = usersRepository.findByUsername(username);
 
-        // If the user is not found, throw an exception
         if (userEntity == null)
         {
             throw new UsernameNotFoundException("User not found");
         }
 
-        // Create a set of authorities (roles) based on user’s role(s) from the database
         Set<GrantedAuthority> authorities = new HashSet<>();
-        String role = userEntity.getRole().toLowerCase();  // Assuming role is stored in lowercase in the database
+        String role = userEntity.getRole().toLowerCase();
 
-        // Assign roles based on the role from the database
-        if ("admin".equals(role))
+        switch (role)
         {
-            // Role 'admin'
-            authorities.add(new SimpleGrantedAuthority("ROLE_admin"));
-        }
-        else if ("staff".equals(role))
-        {
-            // Role 'staff'
-            authorities.add(new SimpleGrantedAuthority("ROLE_staff"));
-        }
-        else
-        {
-             // Default role 'user'
-            authorities.add(new SimpleGrantedAuthority("ROLE_user"));
+            case "admin":
+                authorities.add(new SimpleGrantedAuthority("ROLE_admin"));
+                break;
+            case "staff":
+                authorities.add(new SimpleGrantedAuthority("ROLE_staff"));
+                break;
+            default:
+                authorities.add(new SimpleGrantedAuthority("ROLE_user"));
+                break;
         }
 
-        // Return the user with their roles and encrypted password
         return new User(
-                userEntity.getUsername(),
-                // The encrypted password from the database
-                userEntity.getPassword(),
-                // User's roles (authorities)
-                authorities
+            userEntity.getUsername(),
+            userEntity.getPassword(),
+            authorities
         );
     }
 }

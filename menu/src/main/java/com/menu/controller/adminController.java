@@ -15,6 +15,11 @@ import com.menu.service.*;
 
 import jakarta.validation.Valid;
 
+/**
+ * Controller for admin-related functions in the High Cruise menu system.
+ * 
+ * Provides interfaces for managing products, users, and menus through the admin dashboard.
+ */
 @Controller
 @RequestMapping("/admin")
 public class adminController {
@@ -23,12 +28,18 @@ public class adminController {
     private final LoginService loginService;
     private final MenuService menuService;
 
+    /**
+     * Constructor with service dependencies injected.
+     */
     public adminController(ProductService productService, LoginService loginService, MenuService menuService) {
         this.productService = productService;
         this.loginService = loginService;
         this.menuService = menuService;
     }
 
+    /**
+     * Displays the admin home page.
+     */
     @GetMapping("")
     public String homePage(Model model) {
         return "admin/home";
@@ -36,6 +47,9 @@ public class adminController {
 
     // -------- Product Management
 
+    /**
+     * Displays the product management page.
+     */
     @GetMapping("/product")
     public String showProductManagementPage(Model model) {
         List<ProductEntity> products = productService.getAllProducts();
@@ -43,12 +57,18 @@ public class adminController {
         return "/admin/product/productManagement";
     }
 
+    /**
+     * Shows the form to create a new product.
+     */
     @GetMapping("/product/create")
     public String showCreateProductForm(Model model) {
         model.addAttribute("product", new ProductModel());
         return "admin/product/createProduct";
     }
 
+    /**
+     * Handles submission of the new product form.
+     */
     @PostMapping("/product/create")
     public String createProduct(@ModelAttribute("product") @Valid ProductModel product,
                                 BindingResult bindingResult, Model model) {
@@ -68,12 +88,18 @@ public class adminController {
         }
     }
 
+    /**
+     * Deletes a product by ID.
+     */
     @GetMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable("id") Long productId) {
         productService.deleteProduct(productId);
         return "redirect:/admin";
     }
 
+    /**
+     * Displays the edit form for an existing product.
+     */
     @GetMapping("/product/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         ProductEntity entity = productService.getProductById(id);
@@ -84,10 +110,13 @@ public class adminController {
             entity.getImageUrl(),
             entity.getType()
         );
-        model.addAttribute("product", formModel); // ✅ CORRECT BINDING NAME
+        model.addAttribute("product", formModel);
         return "admin/product/editProduct";
     }
 
+    /**
+     * Updates the product after form submission.
+     */
     @PostMapping("/product/edit/{id}")
     public String updateProduct(@PathVariable("id") Long id,
                                 @ModelAttribute("product") @Valid ProductModel productModel,
@@ -100,19 +129,25 @@ public class adminController {
         return "redirect:/admin/product";
     }
 
+    /**
+     * Serves the product image as a JPEG.
+     */
     @GetMapping(value = "/product/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
-@ResponseBody
-public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
-    ProductEntity product = productService.getProductById(id);
-    if (product != null && product.getImageData() != null) {
-        return ResponseEntity.ok().body(product.getImageData());
-    } else {
-        return ResponseEntity.notFound().build();
+    @ResponseBody
+    public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
+        ProductEntity product = productService.getProductById(id);
+        if (product != null && product.getImageData() != null) {
+            return ResponseEntity.ok().body(product.getImageData());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-}
 
     // -------- User Management
 
+    /**
+     * Displays the user management page.
+     */
     @GetMapping("/users")
     public String showUserManagement(Model model) {
         List<UserEntity> users = loginService.getAllUsers();
@@ -120,6 +155,9 @@ public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
         return "admin/users/userManagement";
     }
 
+    /**
+     * Displays the create user form.
+     */
     @GetMapping("/users/create")
     public String showCreateUserPage(Model model) {
         model.addAttribute("registerModel", new RegisterModel());
@@ -127,6 +165,9 @@ public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
         return "admin/users/createUser";
     }
 
+    /**
+     * Handles creation of a new user.
+     */
     @PostMapping("/user/create")
     public String createUser(@ModelAttribute("registerModel") @Valid RegisterModel registerModel,
                              BindingResult bindingResult,
@@ -140,6 +181,9 @@ public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
         return "redirect:/admin/users";
     }
 
+    /**
+     * Displays the edit form for a user.
+     */
     @GetMapping("/user/edit/{id}")
     public String showEditUserForm(@PathVariable Long id, Model model) {
         UserEntity user = loginService.getUserById(id);
@@ -160,6 +204,9 @@ public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
         return "admin/users/editUser";
     }
 
+    /**
+     * Handles user update after edit form submission.
+     */
     @PostMapping("/user/edit/{id}")
     public String updateUser(@PathVariable Long id,
                              @ModelAttribute("registerModel") @Valid RegisterModel registerModel,
@@ -175,6 +222,9 @@ public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
         return "redirect:/admin/users";
     }
 
+    /**
+     * Deletes a user by ID.
+     */
     @GetMapping("/user/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         loginService.deleteUser(id);
@@ -183,6 +233,9 @@ public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
 
     // -------- Menu Management
 
+    /**
+     * Displays the menu management page.
+     */
     @GetMapping("/menus")
     public String showMenuManagementPage(Model model) {
         Iterable<MenuEntity> menus = menuService.getAllMenus();
@@ -190,12 +243,18 @@ public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
         return "admin/menus/menuManagement";
     }
 
+    /**
+     * Displays the create menu form.
+     */
     @GetMapping("/menus/create")
     public String showCreateMenuForm(Model model) {
         model.addAttribute("menu", new HomeModel(null, null, null, null));
         return "admin/menus/createMenu";
     }
 
+    /**
+     * Handles menu creation form submission.
+     */
     @PostMapping("/menus/create")
     public String createMenu(@ModelAttribute("menu") @Valid HomeModel menu, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -206,12 +265,18 @@ public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
         return "redirect:/admin/menus";
     }
 
+    /**
+     * Deletes a menu by ID.
+     */
     @GetMapping("/menus/delete/{id}")
     public String deleteMenu(@PathVariable("id") Long menuId) {
         menuService.deleteMenu(menuId);
         return "redirect:/admin/menus";
     }
 
+    /**
+     * Displays the edit form for a menu.
+     */
     @GetMapping("/menus/edit/{id}")
     public String showEditMenuForm(@PathVariable("id") Long id, Model model) {
         MenuEntity menu = menuService.getMenuById(id);
@@ -223,6 +288,9 @@ public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
         }
     }
 
+    /**
+     * Handles menu update after form submission.
+     */
     @PostMapping("/menus/edit/{id}")
     public String updateMenu(@PathVariable("id") Long id, @ModelAttribute MenuEntity menu) {
         menu.setId(id);

@@ -12,10 +12,23 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Configures Spring Security for the High Cruise application.
+ * 
+ * This class sets up access rules, login and logout behavior,
+ * and redirects users after successful authentication based on roles.
+ */
 @Configuration
 public class SecurityConfig
 {
 
+    /**
+     * Defines the security filter chain for HTTP requests.
+     *
+     * @param http the {@link HttpSecurity} object used to configure security
+     * @return the configured {@link SecurityFilterChain}
+     * @throws Exception if a security configuration error occurs
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
@@ -36,14 +49,26 @@ public class SecurityConfig
         return http.build();
     }
 
+    /**
+     * Custom success handler to redirect users based on their roles after login.
+     *
+     * @return an {@link AuthenticationSuccessHandler} implementation
+     */
     private AuthenticationSuccessHandler authenticationSuccessHandler()
     {
         return new AuthenticationSuccessHandler()
         {
+            /**
+             * Handles successful authentication by redirecting users based on roles.
+             *
+             * @param request the HTTP request
+             * @param response the HTTP response
+             * @param authentication the authentication object containing user details
+             * @throws IOException if redirection fails
+             */
             @Override
             public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException
             {
-                // Check if the authenticated user has the 'admin' role
                 if (authentication.getAuthorities().stream().anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_admin")))
                 {
                     response.sendRedirect("/admin");  

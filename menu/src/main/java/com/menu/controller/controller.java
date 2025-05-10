@@ -19,6 +19,12 @@ import com.menu.service.*;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
+/**
+ * Main controller for the High Cruise application.
+ * 
+ * Handles public routes such as home, login, registration,
+ * and customer-facing menu pages.
+ */
 @Controller
 public class controller
 {
@@ -29,11 +35,13 @@ public class controller
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * Constructor-based injection
-     * @param productsRepository
-     * @param menuRepository
-     * @param loginService
-     * @param registerService
+     * Constructor for dependency injection.
+     *
+     * @param productsRepository the repository for product data
+     * @param menuRepository the repository for menu data
+     * @param loginService the service for user login
+     * @param registerService the service for user registration
+     * @param passwordEncoder the encoder for securing passwords
      */
     public controller(ProductsRepository productsRepository, MenuRepository menuRepository, LoginService loginService, RegisterService registerService, PasswordEncoder passwordEncoder)
     {
@@ -44,35 +52,37 @@ public class controller
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Displays the home page with available menus.
+     *
+     * @param model the model to pass data to the view
+     * @return the home page template
+     */
     @GetMapping("/")
     public String home(Model model)
     {
-        // Fetch all menus from the database
         Iterable<MenuEntity> menuEntities = menuRepository.findAll();
-    
-        // Map to HomeModel for displaying on the homepage
         List<HomeModel> menus = new ArrayList<>();
         for (MenuEntity entity : menuEntities)
         {
-            HomeModel homeModel = new HomeModel(
+            menus.add(new HomeModel(
                 entity.getName(),
                 entity.getDescription(),
                 entity.getImageUrl(),
                 entity.getType()
-            );
-            menus.add(homeModel);
+            ));
         }
-    
-        // Add data to the model for Thymeleaf template
+
         model.addAttribute("menus", menus);
         model.addAttribute("title", "Home");
         return "home";
     }
 
     /**
-     * Mapping for login
-     * @param model
-     * @return
+     * Displays the login page.
+     *
+     * @param model the model to pass data to the view
+     * @return the login page template
      */
     @GetMapping("/login")
     public String login(Model model)
@@ -81,8 +91,12 @@ public class controller
         return "login";
     }
 
-
-    // Logout
+    /**
+     * Logs the user out by invalidating the session.
+     *
+     * @param session the HTTP session to invalidate
+     * @return redirect to login page
+     */
     @GetMapping("/logout")
     public String logout(HttpSession session)
     {
@@ -91,9 +105,10 @@ public class controller
     }
 
     /**
-     * Mapping for register
-     * @param model
-     * @return
+     * Displays the registration page.
+     *
+     * @param model the model to pass data to the view
+     * @return the registration form template
      */
     @GetMapping("/register")
     public String register(Model model)
@@ -104,34 +119,31 @@ public class controller
     }
 
     /**
-     * Handles Registrations
-     * @param registerModel
-     * @param bindingResult
-     * @param model
-     * @return
+     * Handles user registration.
+     *
+     * @param registerModel the form model for registration
+     * @param bindingResult validation results
+     * @param model the model to pass data to the view
+     * @return redirect or registration page if errors occur
      */
     @PostMapping("/doRegister")
     public String doRegister(@Valid RegisterModel registerModel, BindingResult bindingResult, Model model)
     {
-        // Print information to console
-        System.out.println(String.format(
-            "Form with First name: %s, Last name: %s, Username: %s, and Password: %s",
+        System.out.printf(
+            "Form with First name: %s, Last name: %s, Username: %s, and Password: %s%n",
             registerModel.getFirstName(),
             registerModel.getLastName(),
             registerModel.getUsername(),
-            registerModel.getPassword()));
-    
-        // Return page to show errors
+            registerModel.getPassword()
+        );
+
         if (bindingResult.hasErrors())
         {
             model.addAttribute("title", "Registration");
             return "register";
         }
-    
-        // Encode the password before saving
-        String encodedPassword = passwordEncoder.encode(registerModel.getPassword());
 
-        // Call RegisterService to handle the actual registration process
+        String encodedPassword = passwordEncoder.encode(registerModel.getPassword());
         boolean success = registerService.registerUser(registerModel, encodedPassword);
 
         if (!success)
@@ -139,20 +151,20 @@ public class controller
             model.addAttribute("registerError", "Registration failed. Try again.");
             return "register";
         }
-    
+
         return "redirect:/";
     }
 
     /**
-     * Gets admin to admin page
-     * @param model
-     * @param session
-     * @return
+     * Displays the admin home page if user is authorized.
+     *
+     * @param model the model to pass data to the view
+     * @param session the current user session
+     * @return the admin home page or login redirect
      */
     @GetMapping("/adminHome")
     public String adminHomePage(Model model, HttpSession session)
     {
-        // Checks if user logged in and has admin role
         if (session.getAttribute("userRole") == null || !session.getAttribute("userRole").equals("admin"))
         {
             return "redirect:/login";
@@ -163,61 +175,56 @@ public class controller
     }
 
     /**
-     * Mapping for drink menu
-     * @return
+     * Displays the drink menu page.
+     *
+     * @param model the model to pass drink data to the view
+     * @return the drinks page template
      */
     @GetMapping("/drink")
     public String drinkMenu(Model model)
     {
-        // Fetch all drink products from the database
         List<ProductEntity> drinkEntities = productsRepository.findByType("Drink");
-    
-        // Map to ProductModel
         List<ProductModel> drinks = new ArrayList<>();
+
         for (ProductEntity entity : drinkEntities)
         {
-            // get product information and add model to drinks
-            ProductModel productModel = new ProductModel
-            (
+            drinks.add(new ProductModel(
                 entity.getId(), 
                 entity.getName(),
                 entity.getDescription(),
                 entity.getImageUrl(),
                 entity.getType()
-            );
-            drinks.add(productModel);
+            ));
         }
-    
+
         model.addAttribute("title", "Drink Menu");
         model.addAttribute("drinks", drinks);
         return "drinks";
     }
 
     /**
-     * Mapping for food menu(currently sandwiches)
-     * @return
+     * Displays the sandwich menu page.
+     *
+     * @param model the model to pass sandwich data to the view
+     * @return the sandwich menu template
      */
     @GetMapping("/sandwich")
     public String sandwichMenu(Model model)
     {
-        // Get sandwiches from database
         List<ProductEntity> sandwichEntities = productsRepository.findByType("Sandwich");
-    
-        // Map to ProductModel
         List<ProductModel> sandwiches = new ArrayList<>();
+
         for (ProductEntity entity : sandwichEntities)
         {
-            ProductModel productModel = new ProductModel
-            (
+            sandwiches.add(new ProductModel(
                 entity.getId(),
                 entity.getName(),
                 entity.getDescription(),
                 entity.getImageUrl(),
                 entity.getType()
-            );
-            sandwiches.add(productModel);
+            ));
         }
-    
+
         model.addAttribute("title", "Sandwich Menu");
         model.addAttribute("sandwiches", sandwiches);
         return "sandwiches";

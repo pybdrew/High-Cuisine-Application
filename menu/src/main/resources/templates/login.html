@@ -15,8 +15,8 @@
                         <h2 class="text-center mb-4">Login to Your Account</h2>
                         
                         <!-- Error message for unregistered accounts -->
-                        <div th:if="${error}" class="alert alert-danger">
-                            <span th:text="${error}"></span>
+                        <div th:if="${param.error}" class="alert alert-danger">
+                            <span>Invalid username or password.</span>
                         </div>
 
                         <!-- Login Form -->

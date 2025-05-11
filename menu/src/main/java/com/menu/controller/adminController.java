@@ -1,15 +1,19 @@
 package com.menu.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.menu.data.entity.*;
+import com.menu.data.repository.UsersRepository;
 import com.menu.model.*;
 import com.menu.service.*;
 
@@ -22,7 +26,8 @@ import jakarta.validation.Valid;
  */
 @Controller
 @RequestMapping("/admin")
-public class adminController {
+public class adminController
+{
 
     private final ProductService productService;
     private final LoginService loginService;
@@ -31,7 +36,8 @@ public class adminController {
     /**
      * Constructor with service dependencies injected.
      */
-    public adminController(ProductService productService, LoginService loginService, MenuService menuService) {
+    public adminController(ProductService productService, LoginService loginService, MenuService menuService)
+    {
         this.productService = productService;
         this.loginService = loginService;
         this.menuService = menuService;
@@ -41,7 +47,8 @@ public class adminController {
      * Displays the admin home page.
      */
     @GetMapping("")
-    public String homePage(Model model) {
+    public String homePage(Model model)
+    {
         return "admin/home";
     }
 
@@ -51,7 +58,8 @@ public class adminController {
      * Displays the product management page.
      */
     @GetMapping("/product")
-    public String showProductManagementPage(Model model) {
+    public String showProductManagementPage(Model model)
+    {
         List<ProductEntity> products = productService.getAllProducts();
         model.addAttribute("products", products);
         return "/admin/product/productManagement";
@@ -61,7 +69,8 @@ public class adminController {
      * Shows the form to create a new product.
      */
     @GetMapping("/product/create")
-    public String showCreateProductForm(Model model) {
+    public String showCreateProductForm(Model model)
+    {
         model.addAttribute("product", new ProductModel());
         return "admin/product/createProduct";
     }
@@ -70,20 +79,26 @@ public class adminController {
      * Handles submission of the new product form.
      */
     @PostMapping("/product/create")
-    public String createProduct(@ModelAttribute("product") @Valid ProductModel product,
-                                BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
+    public String createProduct(@ModelAttribute("product") @Valid ProductModel product, BindingResult bindingResult, Model model)
+    {
+        if (bindingResult.hasErrors())
+        {
             return "admin/product/create";
         }
 
         productService.createProduct(product);
         System.out.println("Product created: " + product);
 
-        if ("Drink".equalsIgnoreCase(product.getProductType())) {
+        if ("Drink".equalsIgnoreCase(product.getProductType()))
+        {
             return "redirect:/drink";
-        } else if ("Sandwich".equalsIgnoreCase(product.getProductType())) {
+        }
+        else if ("Sandwich".equalsIgnoreCase(product.getProductType()))
+        {
             return "redirect:/sandwich";
-        } else {
+        }
+        else
+        {
             return "redirect:/";
         }
     }
@@ -92,7 +107,8 @@ public class adminController {
      * Deletes a product by ID.
      */
     @GetMapping("/product/delete/{id}")
-    public String deleteProduct(@PathVariable("id") Long productId) {
+    public String deleteProduct(@PathVariable("id") Long productId)
+    {
         productService.deleteProduct(productId);
         return "redirect:/admin";
     }
@@ -101,7 +117,8 @@ public class adminController {
      * Displays the edit form for an existing product.
      */
     @GetMapping("/product/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    public String showEditForm(@PathVariable Long id, Model model)
+    {
         ProductEntity entity = productService.getProductById(id);
         ProductModel formModel = new ProductModel(
             entity.getId(),
@@ -118,10 +135,10 @@ public class adminController {
      * Updates the product after form submission.
      */
     @PostMapping("/product/edit/{id}")
-    public String updateProduct(@PathVariable("id") Long id,
-                                @ModelAttribute("product") @Valid ProductModel productModel,
-                                BindingResult result, Model model) {
-        if (result.hasErrors()) {
+    public String updateProduct(@PathVariable("id") Long id, @ModelAttribute("product") @Valid ProductModel productModel, BindingResult result, Model model)
+    {
+        if (result.hasErrors())
+        {
             return "admin/product/editProduct";
         }
 
@@ -134,11 +151,15 @@ public class adminController {
      */
     @GetMapping(value = "/product/image/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
     @ResponseBody
-    public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id) {
+    public ResponseEntity<byte[]> serveProductImage(@PathVariable Long id)
+    {
         ProductEntity product = productService.getProductById(id);
-        if (product != null && product.getImageData() != null) {
+        if (product != null && product.getImageData() != null)
+        {
             return ResponseEntity.ok().body(product.getImageData());
-        } else {
+        }
+        else
+        {
             return ResponseEntity.notFound().build();
         }
     }
@@ -149,7 +170,8 @@ public class adminController {
      * Displays the user management page.
      */
     @GetMapping("/users")
-    public String showUserManagement(Model model) {
+    public String showUserManagement(Model model)
+    {
         List<UserEntity> users = loginService.getAllUsers();
         model.addAttribute("users", users);
         return "admin/users/userManagement";
@@ -159,9 +181,10 @@ public class adminController {
      * Displays the create user form.
      */
     @GetMapping("/users/create")
-    public String showCreateUserPage(Model model) {
+    public String showCreateUserPage(Model model)
+    {
         model.addAttribute("registerModel", new RegisterModel());
-        model.addAttribute("roles", List.of("admin", "staff", "customer"));
+        model.addAttribute("roles", List.of("admin", "staff", "user"));
         return "admin/users/createUser";
     }
 
@@ -169,59 +192,96 @@ public class adminController {
      * Handles creation of a new user.
      */
     @PostMapping("/user/create")
-    public String createUser(@ModelAttribute("registerModel") @Valid RegisterModel registerModel,
-                             BindingResult bindingResult,
-                             @RequestParam("role") String role,
-                             Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("roles", List.of("admin", "staff", "customer"));
+    public String createUser(@ModelAttribute("registerModel") @Valid RegisterModel registerModel, BindingResult bindingResult, @RequestParam("role") String role, Model model)
+    {
+        if (bindingResult.hasErrors())
+        {
+            model.addAttribute("roles", List.of("admin", "staff", "user"));
             return "admin/users/createUser";
         }
         loginService.saveUser(registerModel, role);
         return "redirect:/admin/users";
     }
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     /**
-     * Displays the edit form for a user.
-     */
+    * Displays the edit form for a user.
+    */
     @GetMapping("/user/edit/{id}")
-    public String showEditUserForm(@PathVariable Long id, Model model) {
+    public String showEditUserForm(@PathVariable Long id, Model model)
+    {
         UserEntity user = loginService.getUserById(id);
-        if (user == null) {
+        if (user == null)
+        {
             return "redirect:/admin/users";
         }
 
         RegisterModel registerModel = new RegisterModel();
         registerModel.setUsername(user.getUsername());
-        registerModel.setPassword(user.getPassword());
         registerModel.setFirstName(user.getFirstName());
         registerModel.setLastName(user.getLastName());
 
         model.addAttribute("registerModel", registerModel);
         model.addAttribute("userId", id);
         model.addAttribute("currentRole", user.getRole());
-        model.addAttribute("roles", List.of("admin", "staff", "customer"));
+        model.addAttribute("roles", List.of("admin", "staff", "user"));
         return "admin/users/editUser";
     }
 
-    /**
-     * Handles user update after edit form submission.
-     */
-    @PostMapping("/user/edit/{id}")
-    public String updateUser(@PathVariable Long id,
-                             @ModelAttribute("registerModel") @Valid RegisterModel registerModel,
-                             @RequestParam("role") String role,
-                             BindingResult bindingResult,
-                             Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("roles", List.of("admin", "staff", "customer"));
-            return "admin/users/editUser";
-        }
+    @Autowired
+    private UsersRepository usersRepository;
 
-        loginService.updateUser(id, registerModel, role);
-        return "redirect:/admin/users";
+/**
+ * Handles user update after edit form submission.
+ */
+@PostMapping("/users/edit/{id}")
+public String updateUser(@PathVariable Long id,
+                         @ModelAttribute("registerModel") RegisterModel model,
+                         @RequestParam String role,
+                         BindingResult bindingResult,
+                         Model springModel) {
+
+    // Only reject password if it is not empty and fails validation
+    if (!model.getPassword().isEmpty()) {
+        // Validate password manually if needed
+        if (model.getPassword().length() < 8) {
+            bindingResult.rejectValue("password", "error.password", "Password must be at least 8 characters");
+        }
     }
 
+    if (bindingResult.hasErrors()) {
+        springModel.addAttribute("registerModel", model);
+        return "admin/users/editUser"; // Ensure this matches the path to the view
+    }
+
+    // Fetch existing user from DB
+    Optional<UserEntity> existingUserOpt = usersRepository.findById(id);
+    if (existingUserOpt.isEmpty()) {
+        return "redirect:/admin/users"; // or return an error page
+    }
+
+    UserEntity existingUser = existingUserOpt.get();
+
+    // Update fields
+    existingUser.setUsername(model.getUsername());
+    existingUser.setFirstName(model.getFirstName());
+    existingUser.setLastName(model.getLastName());
+    existingUser.setRole(role);
+
+    // Only update password if provided and not empty
+    if (!model.getPassword().isEmpty()) {
+        // Hash the password before saving
+        existingUser.setPassword(passwordEncoder.encode(model.getPassword()));
+    }
+
+    usersRepository.save(existingUser);
+
+    return "redirect:/admin/users";
+}
+
+    
     /**
      * Deletes a user by ID.
      */

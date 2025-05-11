@@ -1,5 +1,7 @@
 package com.menu.model;
 
+import com.menu.validation.ValidPassword;
+
 import jakarta.validation.constraints.*;
 
 /**
@@ -24,11 +26,8 @@ public class RegisterModel
      * and include one special character (!, @, #, $, *).
      */
     @NotNull(message = "Password is a required field")
-    @Size(min = 1, max = 32, message = "•Password must be at least 8 characters and no more than 32 characters")
-    @Pattern(
-        regexp = "^(?=.*[A-Z])(?=.*[!@#$*])[A-Za-z\\d!@#$*]{8,32}$",
-        message = "Password must contain at least one uppercase letter and one special character (!, @, #, $, *)"
-    )
+    @Size(min = 1, max = 100, message = "•Password must be at least 8 characters and no more than 32 characters")
+    @ValidPassword
     private String password;
 
     /**

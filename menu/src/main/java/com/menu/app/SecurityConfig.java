@@ -40,10 +40,12 @@ public class SecurityConfig
             .and()
             .formLogin()
                 .loginPage("/login")
+                .failureUrl("/login?error=notregistered")
                 .permitAll()
                 .successHandler(authenticationSuccessHandler())
             .and()
             .logout()
+                .logoutSuccessUrl("/login")
                 .permitAll();
 
         return http.build();
